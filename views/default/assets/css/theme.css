@@ -1,0 +1,28 @@
+body {
+  padding-top: 70px;
+  padding-bottom: 30px;
+}
+
+.theme-dropdown .dropdown-menu {
+  display: block;
+  position: static;
+  margin-bottom: 20px;
+}
+
+.theme-showcase > p > .btn {
+  margin: 5px 0;
+}
+
+.job-title {
+    color: #269abc; 
+    text-decoration: underline;
+}
+
+.job-company {
+    color: #000; 
+    font-weight: bold;
+}
+
+.job-highlight {
+    background-color: #ffc;
+}

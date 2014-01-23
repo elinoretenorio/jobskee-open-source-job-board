@@ -1,0 +1,65 @@
+==== CHANGELOG ====
+
+Version 1.0.0 (01/01/2014)
+-------------
+  * Added Blocks module
+  * Fixed 404 errors
+
+Version 0.9 (12/14/2013)
+-----------
+  * Added ban IP and email address
+  * Added page manager
+  * Added bulk upload using CSV
+  * Added categories and cities manager
+  * Added Notification class to handle all notification messages
+
+Version 0.8 (12/7/2013)
+-----------
+  * Separated admin templates to another folder
+  * Added viewer for job applications submitted
+  * Updated config file with template paths
+  * Added MarkDown editor for Bootstrap (toopay.github.com/bootstrap-markdown)
+  * Added email subscription
+
+Version 0.7 (12/2/2013)
+-----------
+  * Removed companies module
+  * Added separate admin templates
+  * Added search functionality
+
+Version 0.6 (11/28/2013)
+-----------
+  * Added Parsedown for MarkDown rendering (github.com/erusev/parsedown)
+  * Updated forms
+  * Added job expiration for cron job maintenance
+
+Version 0.5 (11/25/2013)
+-----------
+  * Added job application feature
+
+Version 0.4 (11/23/2013)
+-----------
+  * Added admin authentication
+  * Added job city filter
+
+Version 0.3 (11/19/2013)
+-----------
+  * Added pagination
+  * Added page views
+
+Version 0.2 (11/18/2013)
+-----------
+  * Created separate routing controllers
+  * Added front page jobs listing
+  * Added job posting
+  * Added job category filter
+  * Added SEO title and description
+  * Added OG tags for FB sharing
+
+Version 0.1 (11/14/2013)
+-----------
+  * Initial commit
+  * Added Slim Microframework for routing (slimframework.com)
+  * Added RedBeanPHP for ORM (redbeanphp.com)
+  * Added Bootstrap 3 for UI (getbootstrap.com)
+  * Added PHPMailer (github.com/Synchro/PHPMailer)
