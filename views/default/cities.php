@@ -21,6 +21,7 @@
     <input type="hidden" name="category_id" value="0" />
     <input type="hidden" name="city_id" value="<?php echo $city->id; ?>" />
     <input type="hidden" name="trap" value="" />
+    <input type="hidden" name="<?php _e($csrf_key); ?>" value="<?php _e($csrf_token); ?>">
   </div>
   <button type="submit" class="btn btn-default btn-lg">Subscribe to <?php _e($city->name); ?> jobs</button>
 </form>

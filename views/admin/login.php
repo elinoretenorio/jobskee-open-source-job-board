@@ -22,6 +22,7 @@
   </div>
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-5">
+      <input type="hidden" name="<?php _e($csrf_key); ?>" value="<?php _e($csrf_token); ?>">
       <button type="submit" class="btn btn-default">Sign in</button>
     </div>
   </div>

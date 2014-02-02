@@ -147,6 +147,18 @@ function isBanned() {
 }
 
 /*
+ * checks whether the referrer is the site itself
+ */
+function isValidReferrer() {
+    $app = \Slim\Slim::getInstance();
+    $req = $app->request;
+    if (stripos($req->getReferrer(), BASE_URL, 0) === false) {
+        $app->flash('danger', "Operation is not allowed due to invalid referrer.");
+        $app->redirect(BASE_URL);
+    }
+}
+
+/*
  * get pagination start
  */
 function getPaginationStart($page=null) {

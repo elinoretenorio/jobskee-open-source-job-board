@@ -49,6 +49,7 @@
           <div class="form-group">
             <input type="text" class="form-control" name="value" placeholder="Value" required />
           </div>
+          <input type="hidden" name="<?php _e($csrf_key); ?>" value="<?php _e($csrf_token); ?>">
           <button type="submit" class="btn btn-info">Add to Ban List</button>
         </form>
     </div>

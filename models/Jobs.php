@@ -155,11 +155,11 @@ class Jobs
         if (!is_null($start) && !is_null($limit)) {
             $jobs = R::findAll('jobs', 
                     " status=:status AND category=:category ORDER BY created DESC LIMIT :start, :limit", 
-                    array('status'=>$status, ':category'=>$category, 'start'=>$start, 'limit'=>$limit));
+                    array(':status'=>$status, ':category'=>$category, ':start'=>$start, ':limit'=>$limit));
         } else {
             $jobs = R::findAll('jobs', 
                     " status=:status AND category=:category ORDER BY created DESC", 
-                    array('status'=>$status, ':category'=>$category));
+                    array(':status'=>$status, ':category'=>$category));
         }
         return $jobs;
     }

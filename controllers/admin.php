@@ -43,7 +43,7 @@ $app->group('/admin', function () use ($app) {
     });
     
     // authenticate user
-    $app->post('/authenticate', function () use ($app) {
+    $app->post('/authenticate', 'isValidReferrer', function () use ($app) {
         
         $data = $app->request->post();
         $admin = R::findOne('admin', ' email=:email AND password=:password ', array(':email'=>$data['email'], ':password'=>sha1($data['password'])));
@@ -92,7 +92,7 @@ $app->group('/admin', function () use ($app) {
         */
        $app->group('/categories', function () use ($app) {
            
-           $app->post('/', 'validateUser', function () use ($app) {
+           $app->post('/', 'isValidReferrer', 'validateUser', function () use ($app) {
                
                $data = $app->request->post();
                $c = new Categories($data['id']);
@@ -133,7 +133,7 @@ $app->group('/admin', function () use ($app) {
         */
        $app->group('/cities', function () use ($app) {
            
-           $app->post('/', 'validateUser', function () use ($app) {
+           $app->post('/', 'isValidReferrer', 'validateUser', function () use ($app) {
                
                $data = $app->request->post();
                $c = new Cities($data['id']);
@@ -185,7 +185,7 @@ $app->group('/admin', function () use ($app) {
         });
         
         // process csv file
-        $app->post('/upload', 'validateUser', function () use ($app) {
+        $app->post('/upload', 'isValidReferrer', 'validateUser', function () use ($app) {
             
             $data = array();
             if (isset($_FILES['csv']) && $_FILES['csv']['name'] != '') {
@@ -262,7 +262,7 @@ $app->group('/admin', function () use ($app) {
             $app->redirect(ADMIN_MANAGE);
         });
 
-       // get job post form
+        // get job post form
         $app->get('/new', 'validateUser', function () use ($app) {
             
             $token = token();
@@ -273,7 +273,7 @@ $app->group('/admin', function () use ($app) {
         });
 
         // review job
-        $app->post('/review', 'validateUser', function () use ($app) {
+        $app->post('/review', 'isValidReferrer', 'validateUser', function () use ($app) {
             
             $data = $app->request->post();
             $data = escape($data);
@@ -301,7 +301,7 @@ $app->group('/admin', function () use ($app) {
                 $data['logo'] = '';
             }
             
-            $data['is_featured'] = (isset($data['is_featured'])) ? 1 : 0;
+            $data['is_featured'] = (isset($data['is_featured'])) ? ACTIVE : INACTIVE;
 
             $j = new Jobs();
             $data['step'] = 2;
@@ -311,7 +311,7 @@ $app->group('/admin', function () use ($app) {
         });
 
         // post job publish form
-        $app->post('/:id/publish/:token', 'validateUser', function ($id, $token) use ($app) {
+        $app->post('/:id/publish/:token', 'isValidReferrer', 'validateUser', function ($id, $token) use ($app) {
             
             $data = $app->request->post();
             $data = escape($data);
@@ -395,7 +395,7 @@ $app->group('/admin', function () use ($app) {
                 $app->redirect(ADMIN_URL . "jobs/{$id}/{$title}");
             } else {
                 $app->flash('danger', "Job {$id} could not be turned {$action}.");
-                $app->redirect(ADMIN_URL . "jobs/{$id}{$title}");
+                $app->redirect(ADMIN_URL . "jobs/{$id}/{$title}");
             }
         });
 
@@ -551,7 +551,7 @@ $app->group('/admin', function () use ($app) {
      */
     $app->group('/pages', function () use ($app) {
         
-        $app->post('/', 'validateUser', function () use ($app) {
+        $app->post('/', 'isValidReferrer', 'validateUser', function () use ($app) {
             
             $data = $app->request->post();
             $data = escape($data);
@@ -612,7 +612,7 @@ $app->group('/admin', function () use ($app) {
      */
     $app->group('/blocks', function () use ($app) {
         
-        $app->post('/', 'validateUser', function () use ($app) {
+        $app->post('/', 'isValidReferrer', 'validateUser', function () use ($app) {
             
             $data = $app->request->post();
             
@@ -672,7 +672,7 @@ $app->group('/admin', function () use ($app) {
      */
     $app->group('/ban', function () use ($app) {
         
-        $app->post('/', 'validateUser', function () use ($app) {
+        $app->post('/', 'isValidReferrer', 'validateUser', function () use ($app) {
             
             $ban = new Banlist();
             $data = $app->request->post();
@@ -760,6 +760,54 @@ $app->group('/admin', function () use ($app) {
             
         });
         
-    }); 
+    });
+    
+    $app->group('/subscribers', function () use ($app) {
+        
+        $app->get('(/(:page))', 'validateUser', function ($page=1) use ($app) {
+            
+            $s = new Subscriptions('');
+            
+            $start = getPaginationStart($page);
+            $count = $s->countSubscriptions();
+            $number_of_pages = ceil($count/LIMIT);
+            
+            $users = $s->getAllSubscriptions($start);
+            
+            $app->render(ADMIN_THEME . 'subscribers.php', 
+                            array('users'=>$users, 
+                                'number_of_pages'=>$number_of_pages,
+                                'current_page'=>$page,
+                                'count'=>$count,
+                                'page_name'=>'subscribers'));
+            
+        });
+        
+        $app->get('/:id/:action/:token', 'validateUser', function ($id, $action, $token) use ($app) {
+            
+            $s = new Subscriptions('');
+            $user = $s->getUserSubscription($id, $token);
+            
+            if (isset($user)) {
+                switch ($action) {
+                    case 'approve':
+                        $s->updateSubscription($id, ACTIVE);
+                        $app->flash('success', 'User subscription is confirmed.');
+                        break;
+                    case 'deactivate':
+                        $s->updateSubscription($id, INACTIVE);
+                        $app->flash('success', 'User subscription has been deactivated.');
+                        break;
+                    case 'delete':
+                        $s->deleteSubscription($id, $token);
+                        $app->flash('success', 'User subscription has been deleted.');
+                        break;
+                }
+            }
+            $app->redirect(ADMIN_URL . 'subscribers');
+        
+        });
+        
+    });
     
 });

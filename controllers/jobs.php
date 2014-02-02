@@ -31,7 +31,7 @@ $app->group('/jobs', function () use ($app) {
     });
     
     // review job
-    $app->post('/review', 'isJobPostAllowed', 'isBanned', function () use ($app) {
+    $app->post('/review', 'isJobPostAllowed', 'isBanned', 'isValidReferrer', function () use ($app) {
         
         $data = $app->request->post();
         
@@ -76,7 +76,7 @@ $app->group('/jobs', function () use ($app) {
     });
     
     // post job publish form
-    $app->post('/:id/publish/:token', 'isJobPostAllowed', 'isBanned', function ($id, $token) use ($app) {
+    $app->post('/:id/publish/:token', 'isJobPostAllowed', 'isBanned', 'isValidReferrer', function ($id, $token) use ($app) {
         
         $data = $app->request->post();
         $data = escape($data);

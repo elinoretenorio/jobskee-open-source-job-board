@@ -40,6 +40,7 @@
             <div class="text-center">
               <input type="hidden" id="trap" name="trap" value="" />
               <input type="hidden" id="id" name="id" value="<?php _e($block->id); ?>">
+              <input type="hidden" name="<?php _e($csrf_key); ?>" value="<?php _e($csrf_token); ?>">
               <input type="submit" class="btn btn-success btn-lg" value="Submit Block" />
             </div>
         </div>

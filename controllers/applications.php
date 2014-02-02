@@ -35,7 +35,7 @@ $app->group('/apply', function () use ($app) {
     });
     
     // submit job application
-    $app->post('/submit', 'isBanned', function () use ($app) {
+    $app->post('/submit', 'isValidReferrer', 'isBanned', function () use ($app) {
         
         $data = $app->request->post();
         

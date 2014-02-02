@@ -83,5 +83,25 @@ class Subscriptions
         }
         return false;
     }
+    
+    public function getAllSubscriptions($start)
+    {
+        $users = R::findAll('subscriptions', ' ORDER BY created DESC LIMIT :start, :limit ', array(':start'=>$start, ':limit'=>LIMIT));
+        if (isset($users)) {
+            return $users;
+        }
+        return false;
+    }
+    
+    public function countSubscriptions()
+    {
+        $count = R::count('subscriptions');
+        return $count;
+    }
+    
+    public function deleteSubscription($id, $token) {
+        $user = $this->getUserSubscription($id, $token);
+        R::trash($user);
+    }
 	
 }

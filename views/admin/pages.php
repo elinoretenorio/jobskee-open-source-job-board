@@ -13,7 +13,7 @@
     <tr>
         <th width="10%">ID</th>
         <th width="20%">Name</th>
-        <th width="45%">Description</th>
+        <th width="40%">Description</th>
         <th width="15%">URL</th>
         <th width="15%">Action</th>
     </tr>

@@ -59,6 +59,7 @@
         <input type="text" class="form-control" name="sort" placeholder="Sort" value="<?php if ($category && $category->sort) { _e($category->sort); } ?>" required />
       </div>
       <input type="hidden" name="id" value="<?php if ($category && $category->id) { _e($category->id); } ?>">
+      <input type="hidden" name="<?php _e($csrf_key); ?>" value="<?php _e($csrf_token); ?>">
       <button type="submit" class="btn btn-info">Submit Category</button>
     </form>
   </div>

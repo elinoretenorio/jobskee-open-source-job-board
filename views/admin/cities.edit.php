@@ -60,6 +60,7 @@
         <input type="text" class="form-control" name="sort" placeholder="Sort" value="<?php if ($city && $city->sort) { _e($city->sort); } ?>" required />
       </div>
       <input type="hidden" name="id" value="<?php if ($city && $city->id) { _e($city->id); } ?>">
+      <input type="hidden" name="<?php _e($csrf_key); ?>" value="<?php _e($csrf_token); ?>">
       <button type="submit" class="btn btn-info">Submit City</button>
     </form>
   </div>

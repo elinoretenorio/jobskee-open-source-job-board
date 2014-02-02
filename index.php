@@ -1,4 +1,12 @@
 <?php
+/**
+ * Jobskee - open source job board
+ *
+ * @author      Elinore Tenorio <elinore.tenorio@gmail.com>
+ * @license     MIT
+ * @url         http://www.jobskee.com
+ */
+
 /*
  * Load the configuration file
  */

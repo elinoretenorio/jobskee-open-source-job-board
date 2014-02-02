@@ -64,6 +64,7 @@
                   <li><a href="<?php _e(ADMIN_URL); ?>applications">Job Applications</a></li>
                   <li><a href="<?php _e(ADMIN_URL); ?>manage/categories">Categories</a></li>
                   <li><a href="<?php _e(ADMIN_URL); ?>manage/cities">Cities</a></li>
+                  <li><a href="<?php _e(ADMIN_URL); ?>subscribers">Subscribers</a></li>
                   <li><a href="<?php _e(ADMIN_URL); ?>pages">Site Pages</a></li>
                   <li><a href="<?php _e(ADMIN_URL); ?>blocks">Site Blocks</a></li>
                   <li><a href="<?php _e(ADMIN_URL); ?>jobs/upload">Bulk Job Upload</a></li>

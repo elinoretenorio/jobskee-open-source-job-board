@@ -1,5 +1,11 @@
 ==== CHANGELOG ====
 
+Version 1.0.1 (02/01/2014)
+-------------
+  * Added Subscription manager in admin
+  * Added Slim Extra for CSRF
+  * Added site referrer validation
+
 Version 1.0.0 (01/01/2014)
 -------------
   * Added Blocks module

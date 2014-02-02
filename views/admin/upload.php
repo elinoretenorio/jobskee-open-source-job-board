@@ -22,6 +22,7 @@
                     "Featured (use the word 'featured' to indicate)"
                 </code></p>
             <form class="form-horizontal" role="form" action="<?php _e(ADMIN_URL .'jobs/upload'); ?>" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="<?php _e($csrf_key); ?>" value="<?php _e($csrf_token); ?>">
                 <input type="file" class="filestyle" data-classButton="btn btn-default btn-lg" name="csv" accept="text/csv" required /><br /><br />
                 <input class="btn btn-info" type="submit" value="Upload and Import CSV Data" />
             </form>

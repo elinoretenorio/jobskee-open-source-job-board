@@ -1,4 +1,11 @@
 <?php
+/**
+ * Jobskee - open source job board
+ *
+ * @author      Elinore Tenorio <elinore.tenorio@gmail.com>
+ * @license     MIT
+ * @url         http://www.jobskee.com
+ */
 
 /*
  ****************************************************
@@ -104,7 +111,12 @@ if (APP_MODE == 'production') {
 // SLIM MICROFRAMEWORK
 require 'Slim/Slim.php';
 \Slim\Slim::registerAutoloader();
+
+// SLIM CSRF GUARD
+require 'Slim/Extras/Middleware/CsrfGuard.php';
+
 $app = new \Slim\Slim(array('mode'=>APP_MODE, 'templates.path'=>VIEWS_PATH));
+$app->add(new \Slim\Extras\Middleware\CsrfGuard());
 $app->notFound(function () use ($app) {
     $app->flash('danger', 'The page you are looking for could not be found.');
     $url = (userIsValid()) ? ADMIN_MANAGE : BASE_URL;
