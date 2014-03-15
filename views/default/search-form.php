@@ -3,6 +3,7 @@
     <div class="row">
         <div class="col-md-8">
             <form class="form-horizontal" role="form" method="post" action="<?php _e(BASE_URL . 'search/'); ?>">
+                <input type="hidden" name="<?php _e($csrf_key); ?>" value="<?php _e($csrf_token); ?>">
                 <input type="text" class="form-control input-lg" name="terms" placeholder="Search for 'PHP', 'ajax', 'HTML'...">
             </form>
         </div>
