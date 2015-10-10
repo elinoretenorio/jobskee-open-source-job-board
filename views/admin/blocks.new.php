@@ -10,30 +10,30 @@
         <div class="form-group">
             <div class="col-sm-3"></div>
             <div class="col-sm-8">
-              <h2>Add New Block</h2>
+              <h2><?php echo $lang->t('admin|btn_add_new'); ?> <?php echo $lang->t('admin|site_blocks'); ?></h2>
             </div>
         </div>
        
         <div class="form-group">
-            <label for="name" class="col-sm-3 control-label input-lg">Block Name</label>
+            <label for="name" class="col-sm-3 control-label input-lg"><?php echo $lang->t('admin|block_name'); ?></label>
             <div class="col-sm-8">
               <input type="text" class="form-control input-lg" id="name" name="name" required />
             </div>
         </div>
 
         <div class="form-group">
-        <label for="url" class="col-sm-3 control-label input-lg">Slug URL</label>
+        <label for="url" class="col-sm-3 control-label input-lg"><?php echo $lang->t('admin|slug_url'); ?></label>
             <div class="col-sm-8">
-              <input type="text" class="form-control input-lg" id="url" name="url" placeholder="use dash, no spaces" required />
-              <code>The following slugs are not allowed: <br />jobs/*, admin/*, categories/*, cities/* </code>
+              <input type="text" class="form-control input-lg" id="url" name="url" placeholder="<?php echo $lang->t('admin|slug_placeholder'); ?>" required />
+              <code><?php echo $lang->t('admin|slug_not_allowed'); ?></code>
             </div>
         </div>
           
         <div class="form-group">
-            <label for="content" class="col-sm-3 control-label input-lg">Content</label>
+            <label for="content" class="col-sm-3 control-label input-lg"><?php echo $lang->t('admin|content'); ?></label>
             <div class="col-sm-8">
               <textarea id="content" class="form-control input-lg" name="content" rows="15" required ></textarea>
-              <p class="help-block">accepts HTML5 tags</p>
+              <p class="help-block"><?php echo $lang->t('admin|content_html'); ?></p>
             </div>
         </div>
           
@@ -41,7 +41,7 @@
             <div class="text-center">
               <input type="hidden" id="trap" name="trap" value="" />
               <input type="hidden" name="<?php _e($csrf_key); ?>" value="<?php _e($csrf_token); ?>">
-              <input type="submit" class="btn btn-success btn-lg" value="Submit Block" />
+              <input type="submit" class="btn btn-success btn-lg" value="<?php echo $lang->t('admin|btn_submit'); ?>" />
             </div>
         </div>
     </form>

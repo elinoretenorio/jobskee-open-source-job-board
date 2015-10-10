@@ -1,20 +1,20 @@
 <?php include 'header.php'; ?>
 
-<h3>Blocks</h3>
+<h3><?php echo $lang->t('admin|site_blocks'); ?></h3>
 <?php include 'flash.php'; ?>
 
 <p class="pull-right">
-    <a type="submit" class="btn btn-info btn-md" href="<?php _e(ADMIN_URL . "blocks/new"); ?>">Add New Block</a>
+    <a type="submit" class="btn btn-info btn-md" href="<?php _e(ADMIN_URL . "blocks/new"); ?>"><?php echo $lang->t('admin|btn_add_new'); ?> <?php echo $lang->t('admin|site_blocks'); ?></a>
 </p>
 
 <div class="table-responsive">
     <table class="table table-striped">
     <thead>
     <tr>
-        <th width="10%">ID</th>
-        <th width="25%">Name</th>
+        <th width="10%"><?php echo $lang->t('admin|tbl_id'); ?></th>
+        <th width="25%"><?php echo $lang->t('admin|tbl_name'); ?></th>
         <th width="55%">PHP Embed</th>
-        <th width="10%">Action</th>
+        <th width="10%"><?php echo $lang->t('admin|tbl_action'); ?></th>
     </tr>
     </thead>
     <tbody>

@@ -1,18 +1,18 @@
 <?php include 'header.php'; ?>
 
-<h3><?php _e($count); ?> User Subscriptions</h3>
+<h3><?php _e($count); ?> <?php echo $lang->t('admin|user_subscriptions'); ?></h3>
 <?php include 'flash.php'; ?>
 
 <div class="table-responsive">
     <table class="table table-striped">
     <thead>
     <tr>
-        <th>ID</th>
-        <th>Email</th>
-        <th>Category</th>
-        <th>City</th>
-        <th>Last Sent</th>
-        <th>Action</th>
+        <th><?php echo $lang->t('admin|tbl_id'); ?></th>
+        <th><?php echo $lang->t('admin|tbl_email'); ?></th>
+        <th><?php echo $lang->t('admin|tbl_category'); ?></th>
+        <th><?php echo $lang->t('admin|tbl_city'); ?></th>
+        <th><?php echo $lang->t('admin|tbl_last_sent'); ?></th>
+        <th><?php echo $lang->t('admin|tbl_action'); ?></th>
     </tr>
     </thead>
     <tbody>
@@ -25,15 +25,15 @@
         <td><?php _e(niceDate($user->last_sent)); ?></td>
         <td>
             <?php if (!$user->is_confirmed): ?>
-                <a type="button" class="btn btn-success btn-xs" title="Approve" href="<?php _e(ADMIN_URL . "subscribers/{$user->id}/approve/{$user->token}"); ?>">
+                <a type="button" class="btn btn-success btn-xs" title="<?php echo $lang->t('admin|btn_approve'); ?>" href="<?php _e(ADMIN_URL . "subscribers/{$user->id}/approve/{$user->token}"); ?>">
                     <span class="glyphicon glyphicon-ok"></span>
                 </a>
             <?php else: ?>
-                <a type="button" class="btn btn-warning btn-xs" title="Deactivate" href="<?php _e(ADMIN_URL . "subscribers/{$user->id}/deactivate/{$user->token}"); ?>">
+                <a type="button" class="btn btn-warning btn-xs" title="<?php echo $lang->t('admin|btn_deactivate'); ?>" href="<?php _e(ADMIN_URL . "subscribers/{$user->id}/deactivate/{$user->token}"); ?>">
                     <span class="glyphicon glyphicon-minus"></span>
                 </a>
             <?php endif; ?>
-            <a type="button" class="btn btn-danger btn-xs" title="Delete" href="<?php _e(ADMIN_URL . "subscribers/{$user->id}/delete/{$user->token}"); ?>">
+            <a type="button" class="btn btn-danger btn-xs" title="<?php echo $lang->t('admin|btn_delete'); ?>" href="<?php _e(ADMIN_URL . "subscribers/{$user->id}/delete/{$user->token}"); ?>">
                 <span class="glyphicon glyphicon-remove"></span>
             </a>
         </td>

@@ -11,11 +11,18 @@
 
 class Notifications {
     
-    public $app_name;
+    protected $app_name;
+    protected $email_footer;
 
     public function __construct() 
     {
         $this->app_name = APP_NAME;
+        $base_url = BASE_URL;
+        $this->email_footer = <<<FOOTER
+            <br /><br />
+            --<br />
+            Thank you for using <a href="{$base_url}">{$this->app_name}</a>
+FOOTER;
     }
     
     /*
@@ -168,6 +175,7 @@ class Notifications {
     protected function sendNotification($subject, $message, $recipient, $attachment=null)
     {
         $mail = new PHPMailer();
+        $mail->CharSet = 'UTF-8';
         $mail->IsHTML(true);
         if (SMTP_ENABLED) {
             $mail->isSMTP();
@@ -185,7 +193,7 @@ class Notifications {
         $mail->Password = SMTP_PASS;
         $mail->setFrom(SMTP_USER, APP_NAME . ' Admin');
         $mail->Subject = $subject;
-        $mail->Body = $message;
+        $mail->Body = $message . $this->email_footer;
         $mail->AddAddress($recipient);
         
         $file = ATTACHMENT_PATH . $attachment;

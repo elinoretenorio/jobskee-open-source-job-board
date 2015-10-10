@@ -32,6 +32,7 @@ foreach (glob(CONTROLLER_PATH . "*.php") as $controller) {
 $app->get('/(:page)', function ($page=null) use ($app) {
     
     global $categories;
+    global $lang;
     
     if (isset($page) && $page != '') {
         $content = R::findOne('pages', ' url=:url ', array(':url'=>$page));
@@ -43,12 +44,13 @@ $app->get('/(:page)', function ($page=null) use ($app) {
             $seo_url = BASE_URL . $page;
 
             $app->render(THEME_PATH . 'page.php', 
-                    array('seo_url'=>$seo_url, 
+                    array('lang' => $lang,
+                        'seo_url'=>$seo_url, 
                         'seo_title'=>$seo_title, 
                         'seo_desc'=>$seo_desc, 
                         'content'=>$content));
         } else {
-            $app->flash('danger', 'The page you are looking for could not be found.');
+            $app->flash('danger', $lang->t('alert|page_not_found'));
             $app->redirect(BASE_URL, 404);
         }
     } else {
@@ -64,7 +66,8 @@ $app->get('/(:page)', function ($page=null) use ($app) {
         }
         
         $app->render(THEME_PATH . 'home.php', 
-                    array('seo_url'=>$seo_url, 
+                    array('lang' => $lang,
+                        'seo_url'=>$seo_url, 
                         'seo_title'=>$seo_title, 
                         'seo_desc'=>$seo_desc, 
                         'jobs'=>$jobs));

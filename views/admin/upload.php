@@ -6,9 +6,9 @@
        <?php include 'flash.php'; ?>
       
        <div class="form-group">
-            <h3>Upload Jobs using CSV File</h3>
-            <p>Use this form to bulk upload jobs using a CSV file. Each record is checked whether it has the correct number of fields. When the fields in the CSV do not match the prescribed number of fields, the record is skipped from being uploaded.</p>
-            <p>The file should strictly follow the format below (all the fields should be in the same line per job record):</p>
+            <h3><?php echo $lang->t('admin|upload_title'); ?></h3>
+            <p><?php echo $lang->t('admin|upload_text1'); ?></p>
+            <p><?php echo $lang->t('admin|upload_text2'); ?></p>
             <p><code>
                     "Title", 
                     "Category ID", 
@@ -23,8 +23,8 @@
                 </code></p>
             <form class="form-horizontal" role="form" action="<?php _e(ADMIN_URL .'jobs/upload'); ?>" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="<?php _e($csrf_key); ?>" value="<?php _e($csrf_token); ?>">
-                <input type="file" class="filestyle" data-classButton="btn btn-default btn-lg" name="csv" accept="text/csv" required /><br /><br />
-                <input class="btn btn-info" type="submit" value="Upload and Import CSV Data" />
+                <input type="file" class="filestyle" data-classButton="btn btn-default btn-lg" name="csv" accept="text/csv" data-buttonText="<?php echo $lang->t('jobs|btn_file'); ?>" required /><br /><br />
+                <input class="btn btn-info" type="submit" value="<?php echo $lang->t('admin|btn_upload'); ?>" />
             </form>
         </div>
       

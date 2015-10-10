@@ -24,17 +24,19 @@ $app->group('/search', function () use ($app) {
 
     $app->get('(/:terms)', 'isBanned', function ($terms='') use ($app) {
         
+        global $lang;
         $s = new Search();
         
         $jobs = $s->searchJobs($terms);
         $count = $s->countJobs($terms);
         
         $app->render(THEME_PATH . 'search.php', 
-                    array('terms'=>$terms,
+                    array('lang' => $lang,
+                        'terms'=>$terms,
                         'count'=>$count,
                         'seo_url'=>BASE_URL . 'search', 
-                        'seo_title'=>'Search results for '. APP_NAME, 
-                        'seo_desc'=>'Search results for '. APP_NAME,
+                        'seo_title'=>$lang->t('search|search_result') .' '. APP_NAME, 
+                        'seo_desc'=>$lang->t('search|search_result') .' '. APP_NAME,
                         'jobs'=>$jobs));
         
     }); 

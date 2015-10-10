@@ -4,9 +4,9 @@
     <div class="col-md-12">
         <div class="form-group">
             <h3 class="text-center">
-                <span class="label label-default">Step 1: Create</span>
-                <span class="label label-default">Step 2: Review</span>
-                <span class="label label-info">Step 3: Publish</span>
+                <span class="label label-default"><?php echo $lang->t('jobs|step1'); ?></span>
+                <span class="label label-default"><?php echo $lang->t('jobs|step2'); ?></span>
+                <span class="label label-info"><?php echo $lang->t('jobs|step3'); ?></span>
             </h3>
             <hr />
         </div>
@@ -16,7 +16,7 @@
     <div class="row">
         <div class="col-md-9">
             <h2><?php _e($job->title); ?></h2>
-            <small class="muted">Posted <?php niceDate($job->created); ?></small>
+            <small class="muted"><?php echo $lang->t('jobs|posted'); ?> <?php niceDate($job->created); ?></small>
             <h4><?php _e($job->company_name); ?></h4>
             <h4><?php _e($city); ?> (<?php _e($category); ?>)</h4>
             <h4><a href="<?php _e($job->url); ?>"><?php _e($job->url); ?></a></h4>
@@ -38,7 +38,7 @@
                 <?php echo Parsedown::instance()->parse($job->description); ?>
             </div>
             <?php if ($job->perks != ''): ?>
-                <h2>Perks</h2>
+                <h2><?php echo $lang->t('jobs|perks'); ?></h2>
                 <div class="lead">
                     <?php _e($job->perks); ?>
                 </div>
@@ -48,7 +48,7 @@
     </div>
     <?php if ($job->how_to_apply != ''): ?>
     <div class="well">
-        <h2>How to apply</h2>
+        <h2><?php echo $lang->t('jobs|how_to_apply'); ?></h2>
         <p class="lead"><?php _e($job->how_to_apply); ?></p>
     </div>
     <?php endif; ?>

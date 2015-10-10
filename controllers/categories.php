@@ -20,6 +20,8 @@ $app->group('/categories', function () use ($app) {
     // get category jobs
     $app->get('/:id(/:name(/:page))', function ($id, $name=null, $page=1) use ($app) {
         
+        global $lang;
+        
         $id = (int)$id;
         $cat = new Categories($id);
         $categ = $cat->findCategory();
@@ -36,7 +38,8 @@ $app->group('/categories', function () use ($app) {
             $seo_url = BASE_URL ."categories/{$id}/{$name}";
         
             $app->render(THEME_PATH . 'categories.php', 
-                        array('seo_url'=>$seo_url, 
+                        array('lang' => $lang,
+                            'seo_url'=>$seo_url, 
                             'seo_title'=>$seo_title, 
                             'seo_desc'=>$seo_desc, 
                             'categ'=>$categ, 
@@ -46,7 +49,7 @@ $app->group('/categories', function () use ($app) {
                             'current_page'=>$page,
                             'page_name'=>'categories'));
         } else {
-            $app->flash('danger', 'The category you are looking for could not be found.');
+            $app->flash('danger', $lang->t('alert|page_not_found'));
             $app->redirect(BASE_URL, 404);
         }
         

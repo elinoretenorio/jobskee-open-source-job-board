@@ -32,6 +32,10 @@ Installation
 5. Change file permission of /assets/images and /assets/attachments to 777
 6. Check that all .htaccess files were uploaded
 
+Default admin login info: 
+Email: admin@example.com
+Password: admin
+
 Installation Notes
 ------------------
 
@@ -106,3 +110,7 @@ SHARETHIS_PUBID - in order to enable the social media sharing for the jobs, you 
 CRON_TOKEN - this is used for running cron job to expire jobs. Provide a unique token that you can use in order to expire jobs using the path: `/cron/jobs/expire/:cron_token`
 
 GA_TRACKING - get insights to your job board by adding a Google Analytics tracking ID here.
+
+### Switch Language
+
+Comment out Lines 15 and 16 and uncomment Lines 19 and 20 to switch from English to French translation

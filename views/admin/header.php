@@ -41,9 +41,9 @@
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <?php if (userIsValid()): ?>
-               <li><a href="<?php _e(ADMIN_URL); ?>manage">Home</a></li>
+               <li><a href="<?php _e(ADMIN_URL); ?>manage"><?php echo $lang->t('link|home'); ?></a></li>
                 <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Categories <b class="caret"></b></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $lang->t('link|categories'); ?> <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                   <?php foreach($categories as $cat): ?>  
                   <li><a href="<?php _e(ADMIN_URL . "categories/{$cat->id}/{$cat->url}"); ?>"><?php _e($cat->name); ?></a></li>
@@ -51,7 +51,7 @@
                 </ul> 
                 </li>
                 <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Cities <b class="caret"></b></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $lang->t('link|cities'); ?> <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                   <?php foreach($cities as $cit): ?>  
                   <li><a href="<?php _e(ADMIN_URL . "cities/{$cit->id}/{$cit->url}"); ?>"><?php _e($cit->name); ?></a></li>
@@ -59,23 +59,23 @@
                 </ul>
                 </li>
                 <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Manage <b class="caret"></b></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $lang->t('admin|manage'); ?> <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li><a href="<?php _e(ADMIN_URL); ?>applications">Job Applications</a></li>
-                  <li><a href="<?php _e(ADMIN_URL); ?>manage/categories">Categories</a></li>
-                  <li><a href="<?php _e(ADMIN_URL); ?>manage/cities">Cities</a></li>
-                  <li><a href="<?php _e(ADMIN_URL); ?>subscribers">Subscribers</a></li>
-                  <li><a href="<?php _e(ADMIN_URL); ?>pages">Site Pages</a></li>
-                  <li><a href="<?php _e(ADMIN_URL); ?>blocks">Site Blocks</a></li>
-                  <li><a href="<?php _e(ADMIN_URL); ?>jobs/upload">Bulk Job Upload</a></li>
-                  <li><a href="<?php _e(ADMIN_URL); ?>ban">Ban List</a></li>
-                  <li><a href="<?php _e(ADMIN_URL); ?>jobs/expire">Expire Jobs</a></li>
-                </ul>
+                  <li><a href="<?php _e(ADMIN_URL); ?>applications"><?php echo $lang->t('admin|job_applications'); ?></a></li>
+                  <li><a href="<?php _e(ADMIN_URL); ?>manage/categories"><?php echo $lang->t('link|categories'); ?></a></li>
+                  <li><a href="<?php _e(ADMIN_URL); ?>manage/cities"><?php echo $lang->t('link|cities'); ?></a></li>
+                  <li><a href="<?php _e(ADMIN_URL); ?>subscribers"><?php echo $lang->t('admin|subscribers'); ?></a></li>
+                  <li><a href="<?php _e(ADMIN_URL); ?>pages"><?php echo $lang->t('admin|site_pages'); ?></a></li>
+                  <li><a href="<?php _e(ADMIN_URL); ?>blocks"><?php echo $lang->t('admin|site_blocks'); ?></a></li>
+                  <li><a href="<?php _e(ADMIN_URL); ?>jobs/upload"><?php echo $lang->t('admin|bulk_upload'); ?></a></li>
+                  <li><a href="<?php _e(ADMIN_URL); ?>ban"><?php echo $lang->t('admin|ban_list'); ?></a></li>
+                  <li><a href="<?php _e(ADMIN_URL); ?>jobs/expire"><?php echo $lang->t('admin|expire_jobs'); ?></a></li>
+                  </ul>
                 </li>
-                <li><a href="<?php _e(ADMIN_URL .'jobs/new'); ?>">Post a Job</a></li>
-                <li><a href="<?php _e(ADMIN_URL .'logout'); ?>">Logout</a></li>
+                <li><a href="<?php _e(ADMIN_URL .'jobs/new'); ?>"><?php echo $lang->t('jobs|post_job'); ?></a></li>
+                <li><a href="<?php _e(ADMIN_URL .'logout'); ?>"><?php echo $lang->t('link|logout'); ?></a></li>
             <?php else: ?>
-                <li><a href="<?php _e(ADMIN_URL .'login'); ?>">Login</a></li>
+                <li><a href="<?php _e(ADMIN_URL .'login'); ?>"><?php echo $lang->t('link|login'); ?></a></li>
             <?php endif; ?>
           </ul>
         </div><!--/.nav-collapse -->

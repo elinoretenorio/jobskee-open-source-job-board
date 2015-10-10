@@ -1,18 +1,18 @@
 <?php include 'header.php'; ?>
 
 <?php include 'flash.php'; ?>
-<h3>Inactive Jobs</h3>
+<h3><?php echo $lang->t('admin|inactive'); ?> <?php echo $lang->t('jobs|jobs'); ?></h3>
 <?php foreach($categories as $category): ?>
-    <strong><?php _e($category->name); ?> Jobs</strong>
+    <strong><?php _e($category->name); ?> <?php echo $lang->t('jobs|jobs'); ?></strong>
     <div class="table-responsive">
         <table class="table table-striped">
         <thead>
         <tr>
-            <th width="10%">Date</th>
-            <th width="20%">Company</th>
-            <th width="40%">Title</th>
-            <th width="15%">City</th>
-            <th width="15%">Action</th>
+            <th width="10%"><?php echo $lang->t('admin|tbl_date'); ?></th>
+            <th width="20%"><?php echo $lang->t('admin|tbl_company'); ?></th>
+            <th width="40%"><?php echo $lang->t('admin|tbl_title'); ?></th>
+            <th width="15%"><?php echo $lang->t('admin|tbl_city'); ?></th>
+            <th width="15%"><?php echo $lang->t('admin|tbl_action'); ?></th>
         </tr>
         </thead>
         <tbody>
@@ -24,22 +24,22 @@
             <td><a href="<?php _e(ADMIN_URL ."jobs/{$job->id}"); ?>"><?php _e($job->title); ?></a></td>
             <td><?php _e($cities[$job->city]['name']); ?></td>
             <td>
-                <a type="button" class="btn btn-info btn-xs" title="Edit" href="<?php _e(ADMIN_URL . "jobs/{$job->id}/edit/{$job->token}"); ?>">
+                <a type="button" class="btn btn-info btn-xs" title="<?php echo $lang->t('admin|btn_edit'); ?>" href="<?php _e(ADMIN_URL . "jobs/{$job->id}/edit/{$job->token}"); ?>">
                     <span class="glyphicon glyphicon-pencil"></span>
                 </a>
                 <?php if (!$job->is_featured): ?>
-                    <a type="button" class="btn btn-primary btn-xs" title="Feature On" href="<?php _e(ADMIN_URL . "jobs/{$job->id}/feature/on/{$job->token}"); ?>">
+                    <a type="button" class="btn btn-primary btn-xs" title="<?php echo $lang->t('admin|btn_feature_on'); ?>" href="<?php _e(ADMIN_URL . "jobs/{$job->id}/feature/on/{$job->token}"); ?>">
                         <span class="glyphicon glyphicon-star"></span>
                     </a>
                 <?php else: ?>
-                    <a type="button" class="btn btn-default btn-xs" title="Feature Off" href="<?php _e(ADMIN_URL . "jobs/{$job->id}/feature/off/{$job->token}"); ?>">
+                    <a type="button" class="btn btn-default btn-xs" title="<?php echo $lang->t('admin|btn_feature_off'); ?>" href="<?php _e(ADMIN_URL . "jobs/{$job->id}/feature/off/{$job->token}"); ?>">
                         <span class="glyphicon glyphicon-star"></span>
                     </a>
                 <?php endif; ?>
-                <a type="button" class="btn btn-success btn-xs" title="Approve" href="<?php _e(ADMIN_URL . "jobs/{$job->id}/activate/" . accessToken($job->id)); ?>">
+                <a type="button" class="btn btn-success btn-xs" title="<?php echo $lang->t('admin|btn_aprrove'); ?>" href="<?php _e(ADMIN_URL . "jobs/{$job->id}/activate/" . accessToken($job->id)); ?>">
                     <span class="glyphicon glyphicon-ok"></span>
                 </a>
-                <a type="button" class="btn btn-danger btn-xs" title="Delete" href="<?php _e(ADMIN_URL . "jobs/{$job->id}/delete/{$job->token}"); ?>">
+                <a type="button" class="btn btn-danger btn-xs" title="<?php echo $lang->t('admin|btn_delete'); ?>" href="<?php _e(ADMIN_URL . "jobs/{$job->id}/delete/{$job->token}"); ?>">
                     <span class="glyphicon glyphicon-remove"></span>
                 </a>
             </td>

@@ -64,7 +64,7 @@ function _e($string, $method=null) {
 }
 
 function niceDate($date) {
-    echo date('M j', strtotime($date));
+    echo utf8_encode(strftime('%d %b %Y', strtotime($date)));
 }
 
 function token() {
@@ -95,6 +95,7 @@ function escape($raw) {
  * allow job posting if ALLOW_JOB_POST = 1
  */
 function isJobPostAllowed() {
+    global $lang;
     $app = \Slim\Slim::getInstance();
     if (ALLOW_JOB_POST != 1 && (!isset($_SESSION['email']) || !$_SESSION['email'])) {
         $app->flash('danger', 'Job posting is not allowed.');
@@ -106,14 +107,15 @@ function isJobPostAllowed() {
  * protects admin pages by first authenticating the user
  */
 function validateUser() {
+    global $lang;
     $app = \Slim\Slim::getInstance();
     if (!isset($_SESSION['email']) || !$_SESSION['email']) {
-        $app->flash('danger', 'You must be logged in to browse the site.');
+        $app->flash('danger', $lang->t('alert|login_needed'));
         $app->redirect(LOGIN_URL);
     } else {
         $admin = R::findOne('admin', ' email=:email ', array(':email'=>$_SESSION['email']));
         if (!$admin->id) {
-            $app->flash('danger', 'Invalid login. You are not allowed to access this site.');
+            $app->flash('danger', $lang->t('alert|invalid_login'));
             $app->redirect(LOGIN_URL);
         }
     }
@@ -138,10 +140,11 @@ function userIsValid() {
  * checks whether IP address is in the ban list
  */
 function isBanned() {
+    global $lang;
     $app = \Slim\Slim::getInstance();
     $ban = R::findOne('banlist', ' value=:value ', array(':value'=>$_SERVER['REMOTE_ADDR']));
     if ($ban && $ban->id) {
-        $app->flash('danger', "Your IP address {$_SERVER['REMOTE_ADDR']} is not allowed to access this page.");
+        $app->flash('danger', $lang->t('alert|ip_banned', $_SERVER['REMOTE_ADDR']));
         $app->redirect(BASE_URL);
     }
 }
@@ -150,10 +153,11 @@ function isBanned() {
  * checks whether the referrer is the site itself
  */
 function isValidReferrer() {
+    global $lang;
     $app = \Slim\Slim::getInstance();
     $req = $app->request;
     if (stripos($req->getReferrer(), BASE_URL, 0) === false) {
-        $app->flash('danger', "Operation is not allowed due to invalid referrer.");
+        $app->flash('danger', $lang->t('alert|operation_not_allowed'));
         $app->redirect(BASE_URL);
     }
 }
@@ -165,33 +169,10 @@ function getPaginationStart($page=null) {
     return (!$page || $page==1) ? 0 : ((($page-1)*LIMIT));
 }
 
-/*
-* Search
-* http://www.iamcal.com/publish/articles/php/search/
-*/
 function splitTerms($terms){
-
-   $terms = str_replace('"', '', $terms);
-   $terms = preg_replace("/\"(.*?)\"/e", transformTerms('\$1'), $terms);
-   $terms = preg_split("/\s+|,/", $terms);
-
-   $out = array();
-   foreach($terms as $term){
-           $term = preg_replace("/\{WHITESPACE-([0-9]+)\}/e", "chr(\$1)", $term);
-           $term = preg_replace("/\{COMMA\}/", ",", $term);
-           $out[] = $term;
-   }
-   return $out;
-}
-
-/*
-* Search
-* http://www.iamcal.com/publish/articles/php/search/
-*/
-function transformTerms($term){
-   $term = preg_replace("/(\s)/e", "'{WHITESPACE-'.ord('\$1').'}'", $term);
-   $term = preg_replace("/,/", "{COMMA}", $term);
-   return $term;
+    $words = preg_split("/[\s,]+/", $terms);
+    $words = preg_replace('/([\$\.\|\+\*\?\!])/',"\\\\$1", $words);
+    return $words;
 }
 
 /*

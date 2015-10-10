@@ -7,6 +7,35 @@
  * @url         http://www.jobskee.com
  */
 
+// INITIATE SESSION
+session_start();
+ini_set('default_charset', 'utf-8');
+
+// ENGLISH TRANSLATION
+define('APP_LANG', 'en');
+setlocale(LC_ALL, 'en_EN');
+
+// FRENCH TRANSLATION
+// define('APP_LANG', 'fr');
+// setlocale(LC_ALL, 'fr_FR');
+
+// LOAD ALL MODEL CLASSES
+foreach (glob("models/*.php") as $class) {
+    require_once $class;
+}
+// LOAD TRANSLATION
+$lang = new Translate();
+
+// APPLICATION SETTINGS
+define('APP_NAME', $lang->t('app|name'));
+define('APP_DESC', $lang->t('app|desc'));
+define('APP_AUTHOR', 'Elinore Tenorio (elinore.tenorio@gmail.com)');
+define('APP_MODE', 'development'); // set to 'production' if site is live, affects RedBean not being frozen if not in correct mode
+define('APP_THEME', 'default'); // set to the theme folder name you are using, found in /views directory
+
+// TIMEZONE
+date_default_timezone_set($lang->t('app|timezone'));
+
 /*
  ****************************************************
  * USER SETTINGS
@@ -15,41 +44,23 @@
  ****************************************************
  */
 
-// TIMEZONE
-date_default_timezone_set('Asia/Manila');
-
-// INITIATE SESSION
-// session_cache_limiter(false);
-session_start();
-
-// APPLICATION SETTINGS
-define('APP_NAME', 'Jobskee');
-define('APP_DESC', 'Jobskee open source job board!');
-define('APP_AUTHOR', 'Elinore Tenorio (elinore.tenorio@gmail.com)');
-define('APP_MODE', 'development'); // set to 'production' if site is live, affects RedBean not being frozen if not in correct mode
-define('APP_THEME', 'default'); // set to the theme folder name you are using, found in /views directory
-
 // SMTP SETTINGS
 define('SMTP_ENABLED', true);
 define('SMTP_AUTH', true);
 define('SMTP_URL', 'smtp.gmail.com');
-define('SMTP_USER', '');
-define('SMTP_PASS', '');
+define('SMTP_USER', 'username@gmail.com');
+define('SMTP_PASS', 'password');
 define('SMTP_PORT', 465);
 define('SMTP_SECURE', 'ssl');
 
 // APPLICATION URL PATHS
-define('BASE_URL','http://jobskee:10088/'); // always include the trailing slash at the end
-define('ADMIN_URL','http://jobskee:10088/admin/'); // always include the trailing slash at the end
+define('BASE_URL','http://jobskee.local:10088/'); // always include the trailing slash at the end
 
 // DATABASE SETTINGS
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'jobskee');
-define('DB_USER', '');
+define('DB_USER', 'root');
 define('DB_PASS', '');
-
-// SHARETHIS PUBLICATION ID
-define('SHARETHIS_PUBID', ''); // get a pub id at www.sharethis.com
 
 // GOOGLE ANALYTICS TRACKING
 define('GA_TRACKING', '');
@@ -72,6 +83,7 @@ define('ALLOW_JOB_POST', 1); // set (1) to allow job posting and (0) to turn off
 
 // CORE APPLICATION PATH
 define('APP_PATH', str_replace(DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR, dirname(__FILE__)) . DIRECTORY_SEPARATOR);
+define('ADMIN_URL', BASE_URL . 'admin/'); // always include the trailing slash at the end
 
 // CORE CONSTANTS
 define('ACTIVE', 1);
@@ -106,6 +118,9 @@ foreach (glob(MODEL_PATH . "*.php") as $class) {
 R::setup("mysql:host=".DB_HOST.";dbname=".DB_NAME, DB_USER, DB_PASS);
 if (APP_MODE == 'production') {
     R::freeze();
+	$debug = false;
+} else {
+	$debug = true;
 }
 
 // SLIM MICROFRAMEWORK
@@ -115,11 +130,12 @@ require 'Slim/Slim.php';
 // SLIM CSRF GUARD
 require 'Slim/Extras/Middleware/CsrfGuard.php';
 
-$app = new \Slim\Slim(array('mode'=>APP_MODE, 'templates.path'=>VIEWS_PATH));
+$app = new \Slim\Slim(array('mode'=>APP_MODE, 'templates.path'=>VIEWS_PATH, 'debug'=>$debug));
 $app->add(new \Slim\Extras\Middleware\CsrfGuard());
 $app->notFound(function () use ($app) {
     $app->flash('danger', 'The page you are looking for could not be found.');
     $url = (userIsValid()) ? ADMIN_MANAGE : BASE_URL;
     $app->redirect($url);
 });
+
 $app->flashKeep();

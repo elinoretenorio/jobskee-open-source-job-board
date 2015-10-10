@@ -31,7 +31,10 @@ $app->group('/admin', function () use ($app) {
     // login admin form
     $app->get('/login', function () use ($app) {
         
-        $val = array('seo_title' => APP_NAME,
+        global $lang;
+
+        $val = array('lang' => $lang,
+                    'seo_title' => APP_NAME,
                     'seo_desc' => APP_DESC,
                     'seo_url' => ADMIN_URL);
         
@@ -45,6 +48,8 @@ $app->group('/admin', function () use ($app) {
     // authenticate user
     $app->post('/authenticate', 'isValidReferrer', function () use ($app) {
         
+        global $lang;
+
         $data = $app->request->post();
         $admin = R::findOne('admin', ' email=:email AND password=:password ', array(':email'=>$data['email'], ':password'=>sha1($data['password'])));
         if (isset($admin) && $admin->id) {
@@ -54,17 +59,19 @@ $app->group('/admin', function () use ($app) {
             
             $app->redirect(ADMIN_MANAGE);
         } else {
-            $app->flash('danger', 'Invalid login. You are not allowed to access this site.');
+            $app->flash('danger', $lang->t('admin|invalid_login'));
             $app->redirect(LOGIN_URL);
         }
     });
     
     // logout admin
     $app->get('/logout', 'validateUser', function () use ($app) {
+
+        global $lang;
         
         unset($_SESSION['email']);
         unset($_SESSION['is_admin']);
-        $app->flash('success', 'Logout successful. Please login again.');
+        $app->flash('success', $lang->t('admin|logout_success'));
         $app->redirect('login');
     });
     
@@ -77,14 +84,17 @@ $app->group('/admin', function () use ($app) {
         // manage inactive jobs
         $app->get('/', 'validateUser', function () use ($app) {
 
-            global $categories; 
+            global $categories;
+            global $lang;
+
             $j = new Jobs();
             foreach ($categories as $cat) {
                 $jobs[$cat->id] = $j->getJobs(INACTIVE, $cat->id);
             }
 
             $app->render(ADMIN_THEME . 'home.php', 
-                        array('jobs'=>$jobs));
+                        array('lang' => $lang,
+                        'jobs'=>$jobs));
         });
         
         /*
@@ -93,14 +103,16 @@ $app->group('/admin', function () use ($app) {
        $app->group('/categories', function () use ($app) {
            
            $app->post('/', 'isValidReferrer', 'validateUser', function () use ($app) {
+
+               global $lang;
                
                $data = $app->request->post();
                $c = new Categories($data['id']);
                $c->addCategory($data);
                if ($data && $data['id'] != '')
-                    $message = 'Category was successfully updated.';
+                    $message = $lang->t('admin|category_update');
                else {
-                    $message = 'New category has been added.';
+                    $message = $lang->t('admin|category_new');
                }
                $app->flash('success', $message); 
                $app->redirect(ADMIN_MANAGE . '/categories');
@@ -108,21 +120,23 @@ $app->group('/admin', function () use ($app) {
            
            $app->get('(/(:id(/:action)))', 'validateUser', function ($id=null,$action=null) use ($app) {
                
+               global $lang;
+
                $category = null;
                $c = new Categories($id);
                if ($id && $action == 'edit') {
                     $category = $c->findCategory();
                } elseif ($id && $action == 'delete') {
                     if ($c->deleteCategory()) {
-                        $app->flash('success', 'Category has been deleted.');
+                        $app->flash('success', $lang->t('admin|category_delete'));
                     } else {
-                        $app->flash('danger', 'Category could not be deleted as there are jobs associated with it.');
+                        $app->flash('danger', $lang->t('admin|category_not_delete'));
                     }
                     $app->redirect(ADMIN_MANAGE . '/categories');
                }
                $categories = Categories::findCategories();
                
-               $app->render(ADMIN_THEME . 'categories.edit.php', array('categs'=>$categories, 'category'=>$category));
+               $app->render(ADMIN_THEME . 'categories.edit.php', array('lang' => $lang, 'categs'=>$categories, 'category'=>$category));
 
            });
 
@@ -134,14 +148,16 @@ $app->group('/admin', function () use ($app) {
        $app->group('/cities', function () use ($app) {
            
            $app->post('/', 'isValidReferrer', 'validateUser', function () use ($app) {
+
+               global $lang;
                
                $data = $app->request->post();
                $c = new Cities($data['id']);
                $c->addCity($data);
                if ($data && $data['id'] != '')
-                    $message = 'City was successfully updated.';
+                    $message = $lang->t('admin|city_update');
                else {
-                    $message = 'New city has been added.';
+                    $message = $lang->t('admin|city_new');
                }
                $app->flash('success', $message); 
                $app->redirect(ADMIN_MANAGE . '/cities');
@@ -149,6 +165,8 @@ $app->group('/admin', function () use ($app) {
            
            $app->get('(/(:id(/:action)))', 'validateUser', function ($id=null,$action=null) use ($app) {
                
+               global $lang;
+
                $city = null;
                $c = new Cities($id);
                if ($id && $action == 'edit') {
@@ -156,15 +174,15 @@ $app->group('/admin', function () use ($app) {
                } elseif ($id && $action == 'delete') {
                     $c->deleteCity();
                     if ($c->deleteCity()) {
-                        $app->flash('success', 'City has been deleted.');
+                        $app->flash('success', $lang->t('admin|city_delete'));
                     } else {
-                        $app->flash('danger', 'City could not be deleted as there are jobs associated with it.');
+                        $app->flash('danger', $lang->t('admin|city_not_delete'));
                     }
                     $app->redirect(ADMIN_MANAGE . '/cities');
                }
                $cities = Cities::findCities();
                
-               $app->render(ADMIN_THEME . 'cities.edit.php', array('cits'=>$cities, 'city'=>$city));
+               $app->render(ADMIN_THEME . 'cities.edit.php', array('lang' => $lang, 'cits'=>$cities, 'city'=>$city));
 
            });
 
@@ -181,11 +199,16 @@ $app->group('/admin', function () use ($app) {
         
         // upload jobs from csv
         $app->get('/upload', 'validateUser', function () use ($app) {
-            $app->render(ADMIN_THEME . 'upload.php', array('filestyle'=>ACTIVE));
+
+            global $lang;
+
+            $app->render(ADMIN_THEME . 'upload.php', array('lang' => $lang, 'filestyle'=>ACTIVE));
         });
         
         // process csv file
         $app->post('/upload', 'isValidReferrer', 'validateUser', function () use ($app) {
+
+            global $lang;
             
             $data = array();
             if (isset($_FILES['csv']) && $_FILES['csv']['name'] != '') {
@@ -238,15 +261,15 @@ $app->group('/admin', function () use ($app) {
                     if (file_exists($csv)) {
                         unlink($csv);
                     }
-                    $app->flash('success', "{$added} jobs have been successfully uploaded. {$skipped} jobs have been skipped.");
+                    $app->flash('success', $lang->t('admin|upload_success', $added));
                     $app->redirect(ADMIN_URL . 'jobs/upload');
                     
                 } else {
-                    $app->flash('danger', 'Invalid CSV file upload');
+                    $app->flash('danger', $lang->t('admin|upload_invalid'));
                     $app->redirect(ADMIN_URL . 'jobs/upload');
                 }
             } else {
-                $app->flash('danger', 'No CSV file uploaded.');
+                $app->flash('danger', $lang->t('admin|upload_none'));
                 $app->redirect(ADMIN_URL . 'admin/upload');
             }
             
@@ -254,26 +277,33 @@ $app->group('/admin', function () use ($app) {
         
         // expire jobs after X days
         $app->get('/expire', 'validateUser', function () use ($app) {
+
+            global $lang;
             
             $j = new Jobs();
             $j->expireJobs();
             
-            $app->flash('success', 'Successfully expired jobs.');
+            $app->flash('success', $lang->t('admin|expire_success'));
             $app->redirect(ADMIN_MANAGE);
         });
 
         // get job post form
         $app->get('/new', 'validateUser', function () use ($app) {
+
+            global $lang;
             
             $token = token();
             $app->render(ADMIN_THEME . 'job.new.php', 
-                        array('token'=>$token,
+                        array('lang' => $lang,
+                            'token'=>$token,
                             'markdown'=>ACTIVE,
                             'filestyle'=>ACTIVE));
         });
 
         // review job
         $app->post('/review', 'isValidReferrer', 'validateUser', function () use ($app) {
+
+            global $lang;
             
             $data = $app->request->post();
             $data = escape($data);
@@ -312,6 +342,8 @@ $app->group('/admin', function () use ($app) {
 
         // post job publish form
         $app->post('/:id/publish/:token', 'isValidReferrer', 'validateUser', function ($id, $token) use ($app) {
+
+            global $lang;
             
             $data = $app->request->post();
             $data = escape($data);
@@ -350,6 +382,8 @@ $app->group('/admin', function () use ($app) {
         // get publish job details 
         $app->get('/:id/publish/:token', 'validateUser', function ($id, $token) use ($app) {
             
+            global $lang;
+
             $j = new Jobs($id);
             $job = $j->getJobFromToken($token);
             $title = $j->getSlugTitle();
@@ -358,7 +392,8 @@ $app->group('/admin', function () use ($app) {
 
             if (isset($job) && $job->id) {
                 $app->render(ADMIN_THEME . 'job.publish.php', 
-                        array('job'=>$job, 
+                        array('lang' => $lang,
+                            'job'=>$job, 
                             'city'=>$city, 
                             'category'=>$category));
             } else {
@@ -369,12 +404,15 @@ $app->group('/admin', function () use ($app) {
         // edit job
         $app->get('/:id/edit/:token', 'validateUser', function ($id, $token) use ($app) {
             
+            global $lang;
+
             $j = new Jobs($id);
             $job = $j->getJobFromToken($token);
 
             if (isset($job) && $job->id) {
                 $app->render(ADMIN_THEME . 'job.review.php', 
-                            array('job'=>$job,
+                            array('lang' => $lang,
+                                'job'=>$job,
                                 'markdown'=>ACTIVE,
                                 'filestyle'=>ACTIVE));
             } else {
@@ -387,33 +425,39 @@ $app->group('/admin', function () use ($app) {
         
         // feature job
         $app->get('/:id/feature/:action/:token', 'validateUser', function ($id, $action, $token) use ($app) {
+
+            global $lang;
             
             $j = new Jobs($id);
             $title = $j->getSlugTitle();
             if ($j->featureJob($token, $action)) {
-                $app->flash('success', "Job {$id} feature was turned {$action}.");
+                $app->flash('success', $lang->t('admin|feature_success', $action));
                 $app->redirect(ADMIN_URL . "jobs/{$id}/{$title}");
             } else {
-                $app->flash('danger', "Job {$id} could not be turned {$action}.");
+                $app->flash('danger', $lang->t('admin|feature_error'));
                 $app->redirect(ADMIN_URL . "jobs/{$id}/{$title}");
             }
         });
 
         // delete existing job
         $app->get('/:id/delete/:token', 'validateUser', function ($id, $token) use ($app) {
+
+            global $lang;
             
             $j = new Jobs($id);
             if ($j->deleteJob($token)) {
-                $app->flash('success', "Job {$id} has been deleted successfully.");
+                $app->flash('success', $lang->t('admin|delete_success', $id));
                 $app->redirect(ADMIN_URL);
             } else {
-                $app->flash('danger', "Job {$id} could not be deleted.");
+                $app->flash('danger', $lang->t('admin|delete_error', $id));
                 $app->redirect(ADMIN_MANAGE);
             }
         });
 
         // activate job
         $app->get('/:id/activate/:token', 'validateUser', function ($id, $token) use ($app) {
+
+            global $lang;
             
             $j = new Jobs($id);
             if ($j->activateJob($token)) {
@@ -423,25 +467,27 @@ $app->group('/admin', function () use ($app) {
                 $notif = new Notifications();
                 $notif->sendEmailsToSubscribersMail($id);
                 
-                $app->flash('success', "Job {$id} has been activated successfully.");
+                $app->flash('success', $lang->t('admin|activate_success', $id));
                 $app->redirect(ADMIN_URL . "jobs/{$job->id}/{$title}");
             } else {
-                $app->flash('danger', "Job {$id} could not be activated.");
+                $app->flash('danger', $lang->t('admin|activate_error', $id));
                 $app->redirect(ADMIN_URL . "jobs/{$id}");
             }
         });
         
         // deactivate job
         $app->get('/:id/deactivate/:token', 'validateUser', function ($id, $token) use ($app) {
+
+            global $lang;
             
             $j = new Jobs($id);
             if ($j->deactivateJob($token)) {
                 $job = $j->showJobDetails();
                 $title = $j->getSlugTitle();
-                $app->flash('success', "Job {$id} has been deactivated successfully.");
+                $app->flash('success', $lang->t('admin|deactivate_success', $id));
                 $app->redirect(ADMIN_URL . "jobs/{$job->id}/{$title}");
             } else {
-                $app->flash('danger', "Job {$id} could not be deactivated.");
+                $app->flash('danger', $lang->t('admin|deactivate_error', $id));
                 $app->redirect(ADMIN_URL . "jobs/$id");
             }
         });
@@ -449,6 +495,8 @@ $app->group('/admin', function () use ($app) {
         // show job information
         $app->get('/:id(/:title)', 'validateUser', function ($id, $title=null) use ($app) {
             
+            global $lang;
+
             $j = new Jobs($id);
             $job = $j->showJobDetails();
             $city = $j->getJobCity($job->city);
@@ -457,13 +505,14 @@ $app->group('/admin', function () use ($app) {
 
             if (isset($job) && $job->id) {
                 $app->render(ADMIN_THEME . 'job.show.php', 
-                        array('job'=>$job, 
+                        array('lang' => $lang,
+                            'job'=>$job, 
                             'id'=>$id,
                             'applications'=>$applications,
                             'category'=>$category, 
                             'city'=>$city));
             } else {
-                $app->flash('danger', 'Job could not be found.');
+                $app->flash('danger', $lang->t('admin|not_found'));
                 $app->redirect(ADMIN_MANAGE);
             }
         });
@@ -483,6 +532,8 @@ $app->group('/admin', function () use ($app) {
         // get category jobs
         $app->get('/:id(/:name(/:page))', 'validateUser', function ($id, $name=null, $page=1) use ($app) {
             
+            global $lang;
+
             $id = (int)$id;
             $cat = new Categories($id);
             $start = getPaginationStart($page);
@@ -494,7 +545,8 @@ $app->group('/admin', function () use ($app) {
 
             if (isset($categ) && $categ) {
                 $app->render(ADMIN_THEME . 'categories.php', 
-                            array('categ'=>$categ, 
+                            array('lang' => $lang,
+                                'categ'=>$categ, 
                                 'jobs'=>$jobs,
                                 'id' => $id,
                                 'number_of_pages'=>$number_of_pages,
@@ -520,6 +572,8 @@ $app->group('/admin', function () use ($app) {
         // get category jobs
         $app->get('/:id(/:name(/:page))', 'validateUser', function ($id, $name=null, $page=1) use ($app) {
             
+            global $lang;
+
             $id = (int)$id;
             $cit = new Cities($id);
 
@@ -532,7 +586,8 @@ $app->group('/admin', function () use ($app) {
 
             if (isset($city) && $city) {
                 $app->render(ADMIN_THEME . 'cities.php', 
-                            array('city'=>$city,
+                            array('lang' => $lang,
+                                'city'=>$city,
                                 'jobs'=>$jobs,
                                 'id' => $id,
                                 'number_of_pages'=>$number_of_pages,
@@ -552,6 +607,8 @@ $app->group('/admin', function () use ($app) {
     $app->group('/pages', function () use ($app) {
         
         $app->post('/', 'isValidReferrer', 'validateUser', function () use ($app) {
+
+            global $lang;
             
             $data = $app->request->post();
             $data = escape($data);
@@ -559,34 +616,42 @@ $app->group('/admin', function () use ($app) {
             $p = new Pages();
             $p->addToPageList($data);
             $method = (isset($data['id']) && $data['id'] > 0) ? 'edited' : 'added';
-            $app->flash('success', "Page successfully {$method}.");
+            $app->flash('success', $lang->t('admin|page_success', $method));
             $app->redirect(ADMIN_URL . 'pages');
             
         });
         
         $app->get('/new', 'validateUser', function () use ($app) {
+
+            global $lang;
             
-            $app->render(ADMIN_THEME . 'pages.new.php', array('method'=>'new', 'markdown'=>ACTIVE));
+            $app->render(ADMIN_THEME . 'pages.new.php', array('lang' => $lang, 'method'=>'new', 'markdown'=>ACTIVE));
             
         });
         
         $app->get('/edit/:id', 'validateUser', function ($id) use ($app) {
+
+            global $lang;
             
             $p = new Pages();
             $page = $p->showPage($id);
-            $app->render(ADMIN_THEME . 'pages.edit.php', array('page'=>$page, 'method'=>'edit', 'markdown'=>ACTIVE));
+            $app->render(ADMIN_THEME . 'pages.edit.php', array('lang' => $lang, 'page'=>$page, 'method'=>'edit', 'markdown'=>ACTIVE));
             
         });
         
         $app->get('/delete/:id', 'validateUser', function ($id) use ($app) {
+
+            global $lang;
             
             $p = new Pages();
             $p->deleteFromPage($id);
-            $app->flash('success', 'Page successfully deleted.');
+            $app->flash('success', $lang->t('admin|page_delete'));
             $app->redirect(ADMIN_URL . 'pages');
         });
         
         $app->get('(/(:page))', 'validateUser', function ($page=1) use ($app) {
+
+            global $lang;
             
             $p = new Pages();
             
@@ -597,7 +662,8 @@ $app->group('/admin', function () use ($app) {
             $pages = $p->showPageList($start, LIMIT);
             
             $app->render(ADMIN_THEME . 'pages.php', 
-                    array('pages'=>$pages, 
+                    array('lang' => $lang,
+                        'pages'=>$pages, 
                         'number_of_pages'=>$number_of_pages,
                         'current_page'=>$page,
                         'page_name'=>'pages'));
@@ -613,40 +679,50 @@ $app->group('/admin', function () use ($app) {
     $app->group('/blocks', function () use ($app) {
         
         $app->post('/', 'isValidReferrer', 'validateUser', function () use ($app) {
+
+            global $lang;
             
             $data = $app->request->post();
             
             $b = new Blocks();
             $b->addToBlockList($data);
             $method = (isset($data['id']) && $data['id'] > 0) ? 'edited' : 'added';
-            $app->flash('success', "Block successfully {$method}.");
+            $app->flash('success', $lang->t('admin|block_success', $method));
             $app->redirect(ADMIN_URL . 'blocks');
             
         });
         
         $app->get('/new', 'validateUser', function () use ($app) {
+
+            global $lang;
             
-            $app->render(ADMIN_THEME . 'blocks.new.php', array('method'=>'new'));
+            $app->render(ADMIN_THEME . 'blocks.new.php', array('lang' => $lang, 'method'=>'new'));
             
         });
         
         $app->get('/edit/:id', 'validateUser', function ($id) use ($app) {
+
+            global $lang;
             
             $b = new Blocks();
             $block = $b->showBlock($id);
-            $app->render(ADMIN_THEME . 'blocks.edit.php', array('block'=>$block, 'method'=>'edit'));
+            $app->render(ADMIN_THEME . 'blocks.edit.php', array('lang' => $lang, 'block'=>$block, 'method'=>'edit'));
             
         });
         
         $app->get('/delete/:id', 'validateUser', function ($id) use ($app) {
+
+            global $lang;
             
             $b = new Blocks();
             $b->deleteFromBlock($id);
-            $app->flash('success', 'Block successfully deleted.');
+            $app->flash('success', $lang->t('admin|block_delete'));
             $app->redirect(ADMIN_URL . 'blocks');
         });
         
         $app->get('(/(:page))', 'validateUser', function ($page=1) use ($app) {
+
+            global $lang;
             
             $b = new Blocks();
             
@@ -657,7 +733,8 @@ $app->group('/admin', function () use ($app) {
             $blocks = $b->showBlockList($start, LIMIT);
             
             $app->render(ADMIN_THEME . 'blocks.php', 
-                    array('blocks'=>$blocks, 
+                    array('lang' => $lang,
+                        'blocks'=>$blocks, 
                         'number_of_pages'=>$number_of_pages,
                         'current_page'=>$page,
                         'page_name'=>'blocks'));
@@ -673,28 +750,34 @@ $app->group('/admin', function () use ($app) {
     $app->group('/ban', function () use ($app) {
         
         $app->post('/', 'isValidReferrer', 'validateUser', function () use ($app) {
+
+            global $lang;
             
             $ban = new Banlist();
             $data = $app->request->post();
             $ban->addToList($data['type'], $data['value']);
             
-            $app->flash('success', "{$data['value']} has been added to the ban list.");
+            $app->flash('success', $lang->t('admin|ban_add', $data['value']));
             $app->redirect(ADMIN_URL . 'ban');
             
         });
         
         $app->get('/delete/:id', 'validateUser', function ($id) use ($app) {
+
+            global $lang;
             
             $ban = new Banlist();
             $value = $ban->deleteFromList($id);
             
-            $app->flash('success', "{$value} has been removed from the ban list.");
+            $app->flash('success', $lang->t('admin|ban_remove', $value));
             $app->redirect(ADMIN_URL . 'ban');
             
         });
         
         $app->get('(/(:page))', 'validateUser', function ($page=1) use ($app) {
             
+            global $lang;
+
             $ban = new Banlist();
             
             $start = getPaginationStart($page);
@@ -704,7 +787,8 @@ $app->group('/admin', function () use ($app) {
             $list = $ban->showBanList($start, LIMIT);
             
             $app->render(ADMIN_THEME . 'banlist.php', 
-                    array('list'=>$list, 
+                    array('lang' => $lang,
+                        'list'=>$list, 
                         'number_of_pages'=>$number_of_pages,
                         'current_page'=>$page,
                         'page_name'=>'banlist'));
@@ -720,6 +804,8 @@ $app->group('/admin', function () use ($app) {
         
         // show all job applications
         $app->get('(/(:page))', 'validateUser', function ($page=1) use ($app) {
+
+            global $lang;
             
             $a = new Applications();
             $start = getPaginationStart($page);
@@ -729,7 +815,8 @@ $app->group('/admin', function () use ($app) {
             $applications = $a->getApplications($start);
             
             $app->render(ADMIN_THEME . 'applications.php', 
-                        array('applications'=>$applications,
+                        array('lang' => $lang,
+                            'applications'=>$applications,
                             'number_of_pages'=>$number_of_pages,
                             'current_page'=>$page,
                             'page_name'=>'applications',
@@ -739,6 +826,8 @@ $app->group('/admin', function () use ($app) {
         // get job applications
         $app->get('/jobs/:id(/:page)', 'validateUser', function ($id, $page=1) use ($app) {
             
+            global $lang;
+
             $a = new Applications($id);
             $start = getPaginationStart($page);
             $count = $a->countApplications($id);
@@ -750,7 +839,8 @@ $app->group('/admin', function () use ($app) {
             $applications = $a->getApplications($start);
             
             $app->render(ADMIN_THEME . 'applications.job.php', 
-                        array('applications'=>$applications,
+                        array('lang' => $lang,
+                            'applications'=>$applications,
                             'number_of_pages'=>$number_of_pages,
                             'current_page'=>$page,
                             'page_name'=>'applications',
@@ -766,6 +856,8 @@ $app->group('/admin', function () use ($app) {
         
         $app->get('(/(:page))', 'validateUser', function ($page=1) use ($app) {
             
+            global $lang;
+
             $s = new Subscriptions('');
             
             $start = getPaginationStart($page);
@@ -775,7 +867,8 @@ $app->group('/admin', function () use ($app) {
             $users = $s->getAllSubscriptions($start);
             
             $app->render(ADMIN_THEME . 'subscribers.php', 
-                            array('users'=>$users, 
+                            array('lang' => $lang,
+                                'users'=>$users, 
                                 'number_of_pages'=>$number_of_pages,
                                 'current_page'=>$page,
                                 'count'=>$count,
@@ -784,6 +877,8 @@ $app->group('/admin', function () use ($app) {
         });
         
         $app->get('/:id/:action/:token', 'validateUser', function ($id, $action, $token) use ($app) {
+
+            global $lang;
             
             $s = new Subscriptions('');
             $user = $s->getUserSubscription($id, $token);
@@ -792,15 +887,15 @@ $app->group('/admin', function () use ($app) {
                 switch ($action) {
                     case 'approve':
                         $s->updateSubscription($id, ACTIVE);
-                        $app->flash('success', 'User subscription is confirmed.');
+                        $app->flash('success', $lang->t('admin|subscribe_confirm'));
                         break;
                     case 'deactivate':
                         $s->updateSubscription($id, INACTIVE);
-                        $app->flash('success', 'User subscription has been deactivated.');
+                        $app->flash('success', $lang->t('admin|subscribe_deactivate'));
                         break;
                     case 'delete':
                         $s->deleteSubscription($id, $token);
-                        $app->flash('success', 'User subscription has been deleted.');
+                        $app->flash('success', $lang->t('admin|subscribe_delete'));
                         break;
                 }
             }

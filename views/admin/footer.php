@@ -23,6 +23,5 @@
         <script src="<?php _e(ASSET_URL); ?>bootstrap-markdown/js/to-markdown.js"></script>
         <script src="<?php _e(ASSET_URL); ?>bootstrap-markdown/js/bootstrap-markdown.js"></script>
     <?php endif; ?>
-    
   </body>
 </html>

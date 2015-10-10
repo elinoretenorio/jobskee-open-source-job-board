@@ -15,6 +15,7 @@ $app->group('/jobs', function () use ($app) {
    // get job post form
     $app->get('/new', 'isJobPostAllowed', 'isBanned', function () use ($app) {
         
+        global $lang;
         $token = token();
         
         $seo_title = 'Post new job | '. APP_NAME;
@@ -22,7 +23,8 @@ $app->group('/jobs', function () use ($app) {
         $seo_url = BASE_URL .'jobs/new';
         
         $app->render(THEME_PATH . 'job.new.php', 
-                array('seo_url'=>$seo_url, 
+                array('lang' => $lang,
+                    'seo_url'=>$seo_url, 
                     'seo_title'=>$seo_title, 
                     'seo_desc'=>$seo_desc, 
                     'token'=>$token,
@@ -33,11 +35,13 @@ $app->group('/jobs', function () use ($app) {
     // review job
     $app->post('/review', 'isJobPostAllowed', 'isBanned', 'isValidReferrer', function () use ($app) {
         
+        global $lang;
+
         $data = $app->request->post();
         
         if (Banlist::isBanned('email', $data['email']) 
                 || Banlist::isBanned('ip', $_SERVER['REMOTE_ADDR'])) {
-            $app->flash('danger', "Your email address or IP is not allowed to post a job.");
+            $app->flash('danger', $lang->t('alert|ip_banned'));
             $app->redirect(BASE_URL . "jobs/new");
         }
         
@@ -70,14 +74,19 @@ $app->group('/jobs', function () use ($app) {
         
         $j = new Jobs();
         $data['step'] = 2;
-        $id = $j->jobCreateUpdate($data);
-        
+
+        if ($data['email'] != '' && filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            $id = $j->jobCreateUpdate($data);
+        }
         $app->redirect(BASE_URL ."jobs/{$id}/edit/{$data['token']}");
+        
     });
     
     // post job publish form
     $app->post('/:id/publish/:token', 'isJobPostAllowed', 'isBanned', 'isValidReferrer', function ($id, $token) use ($app) {
         
+        global $lang;
+
         $data = $app->request->post();
         $data = escape($data);
         
@@ -86,7 +95,7 @@ $app->group('/jobs', function () use ($app) {
         
         $data['is_featured'] = (isset($data['is_featured'])) ? 1 : 0;
         
-        if ($data['trap'] != '') {
+        if ($data['trap'] != '' || !$job) {
             $app->redirect(BASE_URL . "jobs/new");
         }
         if (isset($_FILES['logo']) && $_FILES['logo']['name'] != '') {
@@ -112,17 +121,19 @@ $app->group('/jobs', function () use ($app) {
         
         $j->jobCreateUpdate($data);
         if (!$j->getStatus()) {
-            $app->flash('success', "An activation email was sent to {$job->email}. Please click the link to publish your job post.");
+            $app->flash('success', $lang->t('alert|activation_email', $job->email));
         } else {
-            $app->flash('success', 'Job ad was successfully edited.');
+            $app->flash('success', $lang->t('alert|edit_successful'));
         }
         
         $app->redirect(BASE_URL . "jobs/{$id}/publish/{$token}");
     });
     
     // get publish job details 
-    $app->get('/:id/publish/:token', 'isJobPostAllowed', 'isBanned', function ($id, $token) use ($app) {
+    $app->get('/:id/publish/:token', 'isJobPostAllowed', 'isBanned', 'isValidReferrer', function ($id, $token) use ($app) {
         
+        global $lang;
+
         $j = new Jobs($id);
         $job = $j->getJobFromToken($token);
         
@@ -137,14 +148,15 @@ $app->group('/jobs', function () use ($app) {
             $seo_url = BASE_URL ."jobs/{$id}/{$title}";
             
             $app->render(THEME_PATH . 'job.publish.php', 
-                        array('seo_url'=>$seo_url, 
+                        array('lang' => $lang,
+                            'seo_url'=>$seo_url, 
                             'seo_title'=>$seo_title, 
                             'seo_desc'=>$seo_desc, 
                             'job'=>$job, 
                             'city'=>$city, 
                             'category'=>$category));
         } else {
-            $app->flash('danger', 'An error was encountered when publishing your job.');
+            $app->flash('danger', $lang->t('alert|error_encountered'));
             $app->redirect(BASE_URL . "jobs/{$id}/{$title}");
         }        
     });
@@ -152,6 +164,8 @@ $app->group('/jobs', function () use ($app) {
     // edit job
     $app->get('/:id/edit/:token', 'isJobPostAllowed', 'isBanned', function ($id, $token) use ($app) {
         
+        global $lang;
+
         $j = new Jobs($id);
         $job = $j->getJobFromToken($token);
         $title = $j->getSlugTitle();
@@ -162,14 +176,15 @@ $app->group('/jobs', function () use ($app) {
             $seo_url = BASE_URL;
         
             $app->render(THEME_PATH . 'job.review.php', 
-                        array('seo_url'=>$seo_url, 
+                        array('lang' => $lang,
+                            'seo_url'=>$seo_url, 
                             'seo_title'=>$seo_title, 
                             'seo_desc'=>$seo_desc, 
                             'job'=>$job,
                             'markdown'=>ACTIVE,
                             'filestyle'=>ACTIVE));
         } else {
-            $app->flash('danger', 'Unable to edit this job. You must have provided an invalid token.');
+            $app->flash('danger', $lang->t('alert|edit_unable'));
             $app->redirect(BASE_URL . "jobs/{$id}/{$title}");
         }
     });
@@ -177,12 +192,14 @@ $app->group('/jobs', function () use ($app) {
     // delete existing job
     $app->get('/:id/delete/:token', 'isJobPostAllowed', 'isBanned', function ($id, $token) use ($app) {
         
+        global $lang;
+
         $j = new Jobs($id);
         if ($j->deleteJob($token)) {
-            $app->flash('success', "Job {$id} has been deleted successfully.");
+            $app->flash('success', $lang->t('admin|delete_success', $id));
             $app->redirect(BASE_URL);
         } else {
-            $app->flash('danger', "Job {$id} has been deleted successfully.");
+            $app->flash('danger', $lang->t('admin|delete_error', $id));
             $app->redirect(BASE_URL);
         }
         
@@ -191,6 +208,8 @@ $app->group('/jobs', function () use ($app) {
     // activate job
     $app->get('/:id/activate/:token', 'isJobPostAllowed', 'isBanned', function ($id, $token) use ($app) {
         
+        global $lang;
+
         $j = new Jobs($id);
         $title = $j->getSlugTitle();
         
@@ -200,10 +219,10 @@ $app->group('/jobs', function () use ($app) {
             $notif->sendEmailsToSubscribersMail($id);
             
             $job = $j->showJobDetails();
-            $app->flash('success', "Job {$id} has been activated successfully.");
+            $app->flash('success', $lang->t('admin|activate_success', $id));
             $app->redirect(BASE_URL . "jobs/{$id}/{$title}");
         } else {
-            $app->flash('danger', "Job {$id} could not be activated.");
+            $app->flash('danger', $lang->t('admin|activate_error', $id));
             $app->redirect(BASE_URL);
         }
     });
@@ -211,21 +230,25 @@ $app->group('/jobs', function () use ($app) {
     // deactivate job
     $app->get('/:id/deactivate/:token', 'isJobPostAllowed', 'isBanned', function ($id, $token) use ($app) {
 
+        global $lang;
+        
         $j = new Jobs($id);
         var_dump($j);
         if ($j->deactivateJob($token)) {
             $job = $j->showJobDetails();
             $title = $j->getSlugTitle();
-            $app->flash('success', "Job {$id} has been deactivated successfully.");
+            $app->flash('success', $lang->t('admin|deactivate_success', $id));
             $app->redirect(BASE_URL);
         } else {
-            $app->flash('danger', "Job {$id} could not be deactivated.");
+            $app->flash('danger', $lang->t('admin|deactivate_error', $id));
             $app->redirect(BASE_URL);
         }
     });
     
     // show job information
     $app->get('/:id(/:title)', function ($id, $title=null) use ($app) {
+
+        global $lang;
         
         $j = new Jobs($id);
         $job = $j->showJobDetails();
@@ -240,7 +263,8 @@ $app->group('/jobs', function () use ($app) {
             $seo_url = BASE_URL ."jobs/{$id}/{$title}";
             
             $app->render(THEME_PATH . 'job.show.php', 
-                    array('seo_url'=>$seo_url, 
+                    array('lang' => $lang,
+                        'seo_url'=>$seo_url, 
                         'seo_title'=>$seo_title, 
                         'seo_desc'=>$seo_desc, 
                         'job'=>$job, 

@@ -6,7 +6,7 @@
  * @license     MIT
  * @url         http://www.jobskee.com
  * 
- * PAges class handles managing page content
+ * Pages class handles managing page content
  */
 
 class Pages

@@ -1,18 +1,18 @@
 <?php include 'header.php'; ?>
-<h3><?php _e($count); ?> Job Applications</h3>
+<h3><?php _e($count); ?> <?php echo $lang->t('admin|job_applications'); ?></h3>
 <?php if (isset($title) && $title !='' ) :?> 
-    <h4>Title: <a href="<?php _e(ADMIN_URL . "jobs/{$id}"); ?>"><?php _e($title); ?></a></h4>
+    <h4><?php echo $lang->t('apply|job_title'); ?>: <a href="<?php _e(ADMIN_URL . "jobs/{$id}"); ?>"><?php _e($title); ?></a></h4>
 <?php endif; ?>
 
 <div class="table-responsive">
     <table class="table table-striped">
     <thead>
     <tr>
-        <th>Name</th>
-        <th>Location</th>
-        <th>Email</th>
-        <th>Attachment</th>
-        <th>Sent</th>
+        <th><?php echo $lang->t('admin|tbl_name'); ?></th>
+        <th><?php echo $lang->t('admin|tbl_location'); ?></th>
+        <th><?php echo $lang->t('admin|tbl_email'); ?></th>
+        <th><?php echo $lang->t('admin|tbl_attachment'); ?></th>
+        <th><?php echo $lang->t('admin|tbl_sent'); ?></th>
     </tr>
     </thead>
     <tbody>
@@ -23,7 +23,7 @@
         <td><?php _e($apps->email); ?></td>
         <td>
             <?php if ($apps->attachment != ''): ?>
-            <a href="<?php _e(ASSET_URL . "attachments/{$apps->attachment}"); ?>">Download</a>
+            <a href="<?php _e(ASSET_URL . "attachments/{$apps->attachment}"); ?>"><?php echo $lang->t('admin|download'); ?></a>
             <?php endif; ?>
         </td>
         <td><?php _e(niceDate($apps->created)); ?></td>

@@ -1,5 +1,27 @@
 ==== CHANGELOG ====
 
+Version 1.1.2 (10/10/2015)
+-------------
+  * #3 Fixed search bug
+
+Version 1.1.1 (09/14/2015)
+-------------
+  * Added check for empty or invalid Email Address when posting a job
+
+Version 1.1.0 (08/30/2015)
+-------------
+  * Added support for multi-language translation (sponsored by mytux.fr)
+  * Added jobberBase to Jobskee DB migration support (see jobberbase2jobskee.php script)
+
+Version 1.0.2 (09/21/2014)
+-------------
+  * Fixed missing CSRF on search 
+  * Removed ShareThis and replaced with AddThis as block (Admin->Manage->Blocks)
+  * Removed deprecated search
+  * Added debug option (turns off when APP_MODE is 'production')
+  * Added footer message on emails sent (/models/Notifications.php)
+  * Changed highlighting for featured job on search results page
+
 Version 1.0.1 (02/01/2014)
 -------------
   * Added Subscription manager in admin

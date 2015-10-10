@@ -1,6 +1,6 @@
 <?php include 'header.php'; ?>
 
-<h3>Ban List</h3>
+<h3><?php echo $lang->t('admin|ban_list'); ?></h3>
 <?php include 'flash.php'; ?>
 
 <div class="row">
@@ -10,11 +10,11 @@
             <table class="table table-striped">
             <thead>
             <tr>
-                <th width="10%">ID</th>
-                <th width="20%">Type</th>
-                <th width="45%">Value</th>
-                <th width="15%">Date Added</th>
-                <th width="15%">Action</th>
+                <th width="10%"><?php echo $lang->t('admin|tbl_id'); ?></th>
+                <th width="20%"><?php echo $lang->t('admin|tbl_type'); ?></th>
+                <th width="45%"><?php echo $lang->t('admin|tbl_value'); ?></th>
+                <th width="15%"><?php echo $lang->t('admin|tbl_date_added'); ?></th>
+                <th width="15%"><?php echo $lang->t('admin|tbl_action'); ?></th>
             </tr>
             </thead>
             <tbody>
@@ -42,15 +42,15 @@
         <form class="form" role="form" method="post" action="<?php _e(ADMIN_URL . "ban"); ?>">
           <div class="form-group">
             <select name="type" id="type" class="form-control" required />
-                <option value="email">Email Address</option>
-                <option value="ip">IP Address</option>
+                <option value="email"><?php echo $lang->t('admin|tbl_email'); ?></option>
+                <option value="ip"><?php echo $lang->t('admin|tbl_ip'); ?></option>
             </select>
           </div>
           <div class="form-group">
-            <input type="text" class="form-control" name="value" placeholder="Value" required />
+            <input type="text" class="form-control" name="value" placeholder="<?php echo $lang->t('admin|tbl_value'); ?>" required />
           </div>
           <input type="hidden" name="<?php _e($csrf_key); ?>" value="<?php _e($csrf_token); ?>">
-          <button type="submit" class="btn btn-info">Add to Ban List</button>
+          <button type="submit" class="btn btn-info"><?php echo $lang->t('admin|btn_submit'); ?></button>
         </form>
     </div>
 </div>

@@ -20,6 +20,8 @@ $app->group('/cities', function () use ($app) {
     // get city jobs
     $app->get('/:id(/:name(/:page))', function ($id, $name=null, $page=1) use ($app) {
         
+        global $lang;
+
         $id = (int)$id;
         $cit = new Cities($id);
         $city = $cit->findCity();
@@ -36,7 +38,8 @@ $app->group('/cities', function () use ($app) {
             $seo_url = BASE_URL ."cities/{$id}/{$name}";
         
             $app->render(THEME_PATH . 'cities.php', 
-                        array('seo_url'=>$seo_url, 
+                        array('lang' => $lang,
+                            'seo_url'=>$seo_url, 
                             'seo_title'=>$seo_title, 
                             'seo_desc'=>$seo_desc,
                             'city'=>$city,
@@ -46,7 +49,7 @@ $app->group('/cities', function () use ($app) {
                             'current_page'=>$page,
                             'page_name'=>'cities'));
         } else {
-            $app->flash('danger', 'The city you are looking for could not be found.');
+            $app->flash('danger', $lang->t('alert|page_not_found'));
             $app->redirect(BASE_URL, 404);
         }
         

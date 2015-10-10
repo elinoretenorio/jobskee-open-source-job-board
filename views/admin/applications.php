@@ -1,19 +1,19 @@
 <?php include 'header.php'; ?>
-<h3><?php _e($count); ?> Job Applications</h3>
+<h3><?php _e($count); ?> <?php echo $lang->t('admin|job_applications'); ?></h3>
 <?php if (isset($title) && $title !='' ) :?> 
-    <h4>Title: <?php _e($title); ?></h4> 
+    <h4><?php echo $lang->t('apply|job_title'); ?>: <?php _e($title); ?></h4> 
 <?php endif; ?>
 
 <div class="table-responsive">
     <table class="table table-striped">
     <thead>
     <tr>
-        <th>Job</th>
-        <th>Name</th>
-        <th>Location</th>
-        <th>Email</th>
-        <th>Attachment</th>
-        <th>Sent</th>
+        <th><?php echo $lang->t('admin|tbl_id'); ?></th>
+        <th><?php echo $lang->t('admin|tbl_name'); ?></th>
+        <th><?php echo $lang->t('admin|tbl_location'); ?></th>
+        <th><?php echo $lang->t('admin|tbl_email'); ?></th>
+        <th><?php echo $lang->t('admin|tbl_attachment'); ?></th>
+        <th><?php echo $lang->t('admin|tbl_sent'); ?></th>
     </tr>
     </thead>
     <tbody>

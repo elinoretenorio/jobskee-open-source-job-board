@@ -15,6 +15,8 @@ $app->group('/subscribe', function () use ($app) {
     $app->post('/new', 'isBanned', function () use ($app) {
         
         global $categories, $cities;
+        global $lang;
+        
         $data = $app->request->post();
         
         $redirect = ($data['category_id'] > 0) ? 'categories' : 'cities';
@@ -28,32 +30,34 @@ $app->group('/subscribe', function () use ($app) {
         if ($data['trap'] == '') {
             $subscribe = new Subscriptions($data['email'], $data['category_id'], $data['city_id']);
             if ($subscribe->createSubscription($subscription_for)) {
-                $app->flash('success', "A subscription confirmation was sent to your email address.");
+                $app->flash('success', $lang->t('subscribe|confirm_email'));
             } else {
-                $app->flash('danger', "Your subscription failed. You may have an existing subscription already.");
+                $app->flash('danger', $lang->t('subscribe|existing'));
             }
             $app->redirect(BASE_URL . "{$redirect}/{$id}");
         } else {
-            $app->flash('danger', "Your subscription failed. You are not allowed to subscriibe.");
+            $app->flash('danger', $lang->t('subscribe|not_allowed'));
             $app->redirect(BASE_URL . "{$redirect}/{$id}");
         }
     });
     
     $app->get('/:id/:action/:token', 'isBanned', function ($id, $action, $token) use ($app) {
-        
+
+        global $lang;
+
         $status = ($action == 'confirm') ? ACTIVE : INACTIVE;
         $s = new Subscriptions('');
         $user = $s->getUserSubscription($id, $token);
         if ($user) {
             $s->updateSubscription($id, $status);
             if ($status == ACTIVE) {
-                $app->flash('success', 'Thank you for confirming your subscription.');
+                $app->flash('success', $lang->t('subscribe|confirmed'));
             } else {
-                $app->flash('success', 'Your subscription has been canceled.');
+                $app->flash('success', $lang->t('subscribe|cancel'));
             }
             $app->redirect(BASE_URL);
         } else {
-            $app->flash('danger', 'Your subscription could not be confirmed.');
+            $app->flash('danger', $lang->t('subscribe|confirm_error'));
             $app->redirect(BASE_URL);
         }
         

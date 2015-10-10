@@ -15,17 +15,20 @@ $app->group('/apply', function () use ($app) {
     // get job post form
     $app->get('/:job_id(/)', 'isBanned', function ($job_id) use ($app) {
         
+        global $lang;
+        
         $token = token();
         
-        $seo_title = 'Apply for a job | '. APP_NAME;
-        $seo_desc = 'Apply for a job at '. APP_NAME;
+        $seo_title = $lang->t('apply|seo_title') .' | '. APP_NAME;
+        $seo_desc = $lang->t('apply|seo_desc') .' | '. APP_NAME;
         $seo_url = BASE_URL .'apply/new';
         
         $job = new Applications($job_id);
         $title = $job->getJobTitle();
         
         $app->render(THEME_PATH . 'apply.new.php', 
-                    array('seo_url'=>$seo_url, 
+                    array('lang' => $lang,
+                        'seo_url'=>$seo_url, 
                         'seo_title'=>$seo_title, 
                         'seo_desc'=>$seo_desc, 
                         'token'=>$token, 
@@ -36,12 +39,14 @@ $app->group('/apply', function () use ($app) {
     
     // submit job application
     $app->post('/submit', 'isValidReferrer', 'isBanned', function () use ($app) {
+
+        global $lang;
         
         $data = $app->request->post();
         
         if (Banlist::isBanned('email', $data['email']) 
                 || Banlist::isBanned('ip', $_SERVER['REMOTE_ADDR'])) {
-            $app->flash('danger', "Your email address or IP is not allowed to apply for this job.");
+            $app->flash('danger', $lang->t('apply|email_ip_banned'));
             $app->redirect(BASE_URL . "apply/{$data['job_id']}");
         }
         
@@ -67,9 +72,9 @@ $app->group('/apply', function () use ($app) {
         
         $apply = new Applications($data['job_id']);
         if ($apply->applyForJob($data)) {
-            $app->flash('success', 'Application has been successfully sent.');
+            $app->flash('success', $lang->t('apply|msg_success'));
         } else {
-            $app->flash('danger', 'Application could not be sent.');
+            $app->flash('danger', $lang->t('apply|msg_fail'));
         }
         $title = $apply->getJobTitleURL();
         $app->redirect(BASE_URL ."jobs/{$data['job_id']}/{$title}");
