@@ -36,7 +36,7 @@
                         <span class="glyphicon glyphicon-star"></span>
                     </a>
                 <?php endif; ?>
-                <a type="button" class="btn btn-success btn-xs" title="<?php echo $lang->t('admin|btn_aprrove'); ?>" href="<?php _e(ADMIN_URL . "jobs/{$job->id}/activate/" . accessToken($job->id)); ?>">
+                <a type="button" class="btn btn-success btn-xs" title="<?php echo $lang->t('admin|btn_approve'); ?>" href="<?php _e(ADMIN_URL . "jobs/{$job->id}/activate/" . accessToken($job->id)); ?>">
                     <span class="glyphicon glyphicon-ok"></span>
                 </a>
                 <a type="button" class="btn btn-danger btn-xs" title="<?php echo $lang->t('admin|btn_delete'); ?>" href="<?php _e(ADMIN_URL . "jobs/{$job->id}/delete/{$job->token}"); ?>">
