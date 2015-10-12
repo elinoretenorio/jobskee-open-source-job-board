@@ -19,10 +19,15 @@ setlocale(LC_ALL, 'en_EN');
 // define('APP_LANG', 'fr');
 // setlocale(LC_ALL, 'fr_FR');
 
-// LOAD ALL MODEL CLASSES
-foreach (glob("models/*.php") as $class) {
-    require_once $class;
-}
+// AUTO LOAD MODELS
+include 'models/helpers.php';
+include 'models/class.phpmailer.php';
+include 'models/class.smtp.php';
+include 'models/rb.php';
+spl_autoload_register(function ($class) {
+	if (file_exists("models/{$class}.php")) { include "models/{$class}.php"; }	
+});
+
 // LOAD TRANSLATION
 $lang = new Translate();
 
@@ -108,11 +113,6 @@ define('THEME_ASSETS', BASE_URL . VIEWS_PATH .'/'. THEME_PATH .'assets/');
 // ADMIN THEME SETTINGS
 define('ADMIN_THEME', 'admin/');
 define('ADMIN_ASSETS', BASE_URL . VIEWS_PATH .'/'. ADMIN_THEME . 'assets/');
-
-// LOAD ALL MODEL CLASSES
-foreach (glob(MODEL_PATH . "*.php") as $class) {
-    require_once $class;
-}
 
 // REDBEAN ORM CONFIG
 R::setup("mysql:host=".DB_HOST.";dbname=".DB_NAME, DB_USER, DB_PASS);
