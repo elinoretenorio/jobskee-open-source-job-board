@@ -171,7 +171,8 @@ function getPaginationStart($page=null) {
 
 function splitTerms($terms){
     $words = preg_split("/[\s,]+/", $terms);
-    $words = preg_replace('/([\$\.\|\+\*\?\!])/',"\\\\$1", $words);
+    $words = array_filter($words);
+    $words = preg_replace('/([\$\.\|\+\*\?\!\/\\\ \,\[\]\(\)\{\}\|\<])/',"\\\\$1", $words);
     return $words;
 }
 
