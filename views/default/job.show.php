@@ -25,7 +25,7 @@
                 <?php echo Parsedown::instance()->parse($job->description); ?>
             </div>
             <?php if ($job->perks != ''): ?>
-                <h2>Perks</h2>
+                <h2><?php echo $lang->t('jobs|perks'); ?></h2>
                 <p class="lead">
                     <?php _e($job->perks,'r'); ?>
                 </p>
