@@ -78,7 +78,13 @@ $app->group('/jobs', function () use ($app) {
         if ($data['email'] != '' && filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             $id = $j->jobCreateUpdate($data);
         }
-        $app->redirect(BASE_URL ."jobs/{$id}/edit/{$data['token']}");
+
+        if (!isset($id)) {
+            $app->flash('danger', $lang->t('alert|error_encountered'));
+            $app->redirect(BASE_URL ."jobs/new");
+        } else {
+            $app->redirect(BASE_URL ."jobs/{$id}/edit/{$data['token']}");
+        }
         
     });
     
@@ -184,7 +190,7 @@ $app->group('/jobs', function () use ($app) {
                             'markdown'=>ACTIVE,
                             'filestyle'=>ACTIVE));
         } else {
-            $app->flash('danger', $lang->t('alert|edit_unable'));
+            $app->flash('danger', $lang->t('alert|error_encountered'));
             $app->redirect(BASE_URL . "jobs/{$id}/{$title}");
         }
     });
