@@ -30,6 +30,13 @@ class Categories {
                             array(':category'=>$this->_id, ':start'=>$start, ':limit'=>$limit));
         return $jobs;
     }
+
+    public function findAllCategoryJobs() 
+    {
+        $jobs = R::findAll('jobs', " status=1 AND category=:category ORDER BY created DESC LIMIT 0, 100", 
+                            array(':category'=>$this->_id));
+        return $jobs;
+    }
     
     public function countCategoryJobs() {
         $count = R::count('jobs', " status=1 AND category=:category ", array(':category'=>$this->_id));

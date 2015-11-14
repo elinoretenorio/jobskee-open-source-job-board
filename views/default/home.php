@@ -4,7 +4,7 @@
 <?php include 'flash.php'; ?>
 <?php foreach($categories as $category): ?>
 <a name="<?php _e($category->url); ?>"></a>
-<h3><?php _e($category->name); ?> <?php echo $lang->t('jobs|jobs'); ?></h3>
+<h3><?php _e($category->name); ?> <?php echo $lang->t('jobs|jobs'); ?> <a href="<?php _e(BASE_URL ."categories/{$category->id}/{$category->url}/rss"); ?>" target="_blank" class="badge job-rss">RSS</a></h3>
 <div class="list-group">
 <?php foreach($jobs[$category->id] as $job): ?>
     <a class="list-group-item <?php if ($job->is_featured): ?>job-highlight<?php endif; ?>" href="<?php _e(BASE_URL ."jobs/{$job->id}/". slugify($job->title ." {$lang->t('jobs|at')} ". $job->company_name)); ?>">

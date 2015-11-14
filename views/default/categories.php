@@ -2,7 +2,7 @@
 <?php include 'search-form.php'; ?>
 
 <?php include 'flash.php'; ?>
-<h3><?php _e($categ->name); ?> <?php echo $lang->t('jobs|jobs'); ?></h3>
+<h3><?php _e($categ->name); ?> <?php echo $lang->t('jobs|jobs'); ?>  <a href="<?php _e(BASE_URL ."categories/{$categ->id}/{$categ->url}/rss"); ?>" target="_blank" class="badge job-rss">RSS</a></h3>
 <div class="list-group">
 <?php foreach($jobs as $job): ?>    
   <a class="list-group-item <?php if ($job->is_featured): ?>job-highlight<?php endif; ?>" href="<?php _e(BASE_URL ."jobs/{$job->id}/". slugify($job->title ." {$lang->t('jobs|at')} ". $job->company_name)); ?>">

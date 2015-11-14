@@ -26,3 +26,7 @@ body {
 .job-highlight {
     background-color: #ffc;
 }
+
+.job-rss {
+  background-color: #ff6600 !important;
+}

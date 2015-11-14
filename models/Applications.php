@@ -28,8 +28,9 @@ class Applications
     
     public function getJobTitleURL() 
     {
+        global $lang;
         $job = R::load('jobs', $this->_job_id);
-        $job_url = $job->title . ' at ' . $job->company_name;
+        $job_url = $job->title ." {$lang->t('jobs|at')} ". $job->company_name;
         return slugify($job_url);
     }
 

@@ -30,6 +30,13 @@ class Cities {
                             array(':city'=>$this->_id, ':start'=>$start, ':limit'=>$limit));
         return $jobs;
     }
+
+    public function findAllCityJobs() 
+    {
+        $jobs = R::findAll('jobs', " status=1 AND city=:city ORDER BY created DESC LIMIT 0, 100", 
+                            array(':city'=>$this->_id));
+        return $jobs;
+    }
     
     public function countCityJobs() {
         $count = R::count('jobs', " status=1 AND city=:city ", array(':city'=>$this->_id));

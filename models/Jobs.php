@@ -172,14 +172,16 @@ class Jobs
     
     public function getSlugTitle()
     {
+        global $lang;
         $job = $this->showJobDetails();
-        return slugify($job->title . ' at ' . $job->company_name);
+        return slugify($job->title ." {$lang->t('jobs|at')} ". $job->company_name);
     }
     
     public function getSeoTitle() 
     {
+        global $lang;
         $job = $this->showJobDetails();
-        return $job->title . ' at ' . $job->company_name;
+        return $job->title ." {$lang->t('jobs|at')} ". $job->company_name;
     }
     
 }

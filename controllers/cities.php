@@ -16,6 +16,41 @@ $app->group('/cities', function () use ($app) {
     $app->get('/', function () use ($app) {
         $app->redirect(BASE_URL);
     });
+
+    // rss city jobs
+    $app->get('/:id/:name/rss', function ($id, $name) use ($app) {
+
+        global $lang;
+
+        $id = (int)$id;
+        $city = new Cities($id);
+        $info = $city->findCity();
+
+        $jobs = $city->findAllCityJobs();
+
+        $app->response->headers->set('Content-Type', 'application/rss+xml');
+
+        $xml = new SimpleXMLElement('<rss version="2.0"></rss>');
+        $xml->addChild('channel');
+        $xml->channel->addChild('title', $info->name ." ". $lang->t('jobs|jobs') .' | '. APP_NAME); 
+        $xml->channel->addChild('link', BASE_URL . "cities/{$info->id}/{$info->url}");
+        $xml->channel->addChild('description', htmlentities($info->description)); 
+        foreach ($jobs as $job) { 
+            $item = $xml->channel->addChild('item'); 
+            $item->addChild('title', htmlentities($job->title)); 
+            $item->addChild('link', BASE_URL . "jobs/{$job->id}/". slugify($job->title ." {$lang->t('jobs|at')} ". $job->company_name));
+            $item->addChild('description', htmlentities($job->description)); 
+            $guid = $item->addChild('guid', $job->id .'@' . BASE_URL); 
+            $guid->addAttribute('isPermaLink', "false");
+            $item->addChild('pubDate', date(DATE_RSS, strtotime($job->created))); 
+        }
+        $dom = new DOMDocument();
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = true;
+        $dom->loadXML($xml->asXML());
+        echo $dom->saveXML();
+        
+    });
     
     // get city jobs
     $app->get('/:id(/:name(/:page))', function ($id, $name=null, $page=1) use ($app) {
