@@ -151,7 +151,7 @@ class ResizeImage
                     default:
                             if($this->origWidth > $width || $this->origHeight > $height)
                             {
-                                    if ( $this->origWidth > $this->origHeight ) {
+                                    if ( $this->origWidth >= $this->origHeight ) {
                                      $this->resizeHeight = $this->resizeHeightByWidth($width);
                                              $this->resizeWidth  = $width;
                                     } else if( $this->origWidth < $this->origHeight ) {
