@@ -28,7 +28,7 @@ $app->group('/cities', function () use ($app) {
 
         $jobs = $city->findAllCityJobs();
 
-        $app->response->headers->set('Content-Type', 'application/rss+xml');
+        $app->response->headers->set('Content-Type', 'application/rss+xml;charset=utf-8');
 
         $xml = new SimpleXMLElement('<rss version="2.0"></rss>');
         $xml->addChild('channel');
