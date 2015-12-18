@@ -166,6 +166,17 @@ class ResizeImage
         }
 
         $this->newImage = imagecreatetruecolor($this->resizeWidth, $this->resizeHeight);
+        
+        switch($this->ext)
+        {
+            case 'image/png':
+            case 'image/gif':
+                imagecolortransparent($this->newImage, imagecolorallocatealpha($this->newImage, 0, 0, 0, 127));
+                imagealphablending($this->newImage, false);
+                imagesavealpha($this->newImage, true);
+            break;
+        }
+        
         imagecopyresampled($this->newImage, $this->image, 0, 0, 0, 0, $this->resizeWidth, $this->resizeHeight, $this->origWidth, $this->origHeight);
     }
 
