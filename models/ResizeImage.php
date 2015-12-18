@@ -26,12 +26,12 @@ class ResizeImage
      */
     public function __construct( $filename )
     {
-            if(file_exists($filename))
-            {
-                    $this->setImage( $filename );
-            } else {
-                    throw new Exception('Image ' . $filename . ' can not be found, try another image.');
-            }
+        if(file_exists($filename))
+        {
+            $this->setImage( $filename );
+        } else {
+            throw new Exception('Image ' . $filename . ' can not be found, try another image.');
+        }
     }
 
     /**
@@ -41,10 +41,10 @@ class ResizeImage
      */
     private function setImage( $filename )
     {
-            $size = getimagesize($filename);
-            $this->ext = $size['mime'];
+        $size = getimagesize($filename);
+        $this->ext = $size['mime'];
 
-            switch($this->ext)
+        switch($this->ext)
         {
             // Image is a JPG
             case 'image/jpg':
@@ -112,9 +112,9 @@ class ResizeImage
         if($download)
         {
             header('Content-Description: File Transfer');
-                    header("Content-type: application/octet-stream");
-                    header("Content-disposition: attachment; filename= ".$savePath."");
-                    readfile($savePath);
+            header("Content-type: application/octet-stream");
+            header("Content-disposition: attachment; filename= ".$savePath."");
+            readfile($savePath);
         }
 
         imagedestroy($this->newImage);
@@ -131,42 +131,42 @@ class ResizeImage
      */
     public function resizeTo( $width, $height, $resizeOption = 'default' )
     {
-            switch(strtolower($resizeOption))
-            {
-                    case 'exact':
-                            $this->resizeWidth = $width;
-                            $this->resizeHeight = $height;
-                    break;
+        switch(strtolower($resizeOption))
+        {
+            case 'exact':
+                $this->resizeWidth = $width;
+                $this->resizeHeight = $height;
+            break;
 
-                    case 'maxwidth':
-                            $this->resizeWidth  = $width;
-                            $this->resizeHeight = $this->resizeHeightByWidth($width);
-                    break;
+            case 'maxwidth':
+                $this->resizeWidth  = $width;
+                $this->resizeHeight = $this->resizeHeightByWidth($width);
+            break;
 
-                    case 'maxheight':
-                            $this->resizeWidth  = $this->resizeWidthByHeight($height);
-                            $this->resizeHeight = $height;
-                    break;
+            case 'maxheight':
+                $this->resizeWidth  = $this->resizeWidthByHeight($height);
+                $this->resizeHeight = $height;
+            break;
 
-                    default:
-                            if($this->origWidth > $width || $this->origHeight > $height)
-                            {
-                                    if ( $this->origWidth >= $this->origHeight ) {
-                                     $this->resizeHeight = $this->resizeHeightByWidth($width);
-                                             $this->resizeWidth  = $width;
-                                    } else if( $this->origWidth < $this->origHeight ) {
-                                            $this->resizeWidth  = $this->resizeWidthByHeight($height);
-                                            $this->resizeHeight = $height;
-                                    }
-                            } else {
-                        $this->resizeWidth = $width;
+            default:
+                if($this->origWidth > $width || $this->origHeight > $height)
+                {
+                    if ( $this->origWidth >= $this->origHeight ) {
+                        $this->resizeHeight = $this->resizeHeightByWidth($width);
+                        $this->resizeWidth  = $width;
+                    } else if( $this->origWidth < $this->origHeight ) {
+                        $this->resizeWidth  = $this->resizeWidthByHeight($height);
                         $this->resizeHeight = $height;
                     }
-                    break;
-            }
+                } else {
+                    $this->resizeWidth = $width;
+                    $this->resizeHeight = $height;
+                }
+            break;
+        }
 
-            $this->newImage = imagecreatetruecolor($this->resizeWidth, $this->resizeHeight);
-    imagecopyresampled($this->newImage, $this->image, 0, 0, 0, 0, $this->resizeWidth, $this->resizeHeight, $this->origWidth, $this->origHeight);
+        $this->newImage = imagecreatetruecolor($this->resizeWidth, $this->resizeHeight);
+        imagecopyresampled($this->newImage, $this->image, 0, 0, 0, 0, $this->resizeWidth, $this->resizeHeight, $this->origWidth, $this->origHeight);
     }
 
     /**
@@ -178,7 +178,7 @@ class ResizeImage
      */
     private function resizeHeightByWidth($width)
     {
-            return floor(($this->origHeight/$this->origWidth)*$width);
+        return floor(($this->origHeight/$this->origWidth)*$width);
     }
 
     /**
@@ -190,6 +190,6 @@ class ResizeImage
      */
     private function resizeWidthByHeight($height)
     {
-            return floor(($this->origWidth/$this->origHeight)*$height);
+        return floor(($this->origWidth/$this->origHeight)*$height);
     }
 }
