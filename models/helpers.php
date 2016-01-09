@@ -63,6 +63,13 @@ function _e($string, $method=null) {
     }
 }
 
+/*
+* http://stackoverflow.com/questions/10276656/php-errors-parsing-xml-rss-feed
+*/
+function escapeXML($string) {
+    return str_replace(array("&amp;", "&"), array("&", "&amp;"), $string);
+}
+
 function niceDate($date) {
     echo utf8_encode(strftime('%d %b %Y', strtotime($date)));
 }
