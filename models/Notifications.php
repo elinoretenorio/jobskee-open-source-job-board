@@ -155,8 +155,9 @@ FOOTER;
             $name = ($user->category_id > 0) ? $category_name : $city_name;
             
             $subject = "A new {$name} job was posted at {$this->app_name}";
+
+            $message = '';
             $message .= "<p>You subcribed to receive {$name} jobs on {$this->app_name}.</p>";
-            
             $message .= $content;
             $message .= "<p>To unsubscribe, click this link to stop receiving alerts.</p>";
             $message .= "<p><a href={$link}>{$link}</a></p>";
