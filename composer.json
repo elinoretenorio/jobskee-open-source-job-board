@@ -1,0 +1,6 @@
+{
+    "require": {
+        "slim/slim": "2.*",
+        "slim/extras": "^2.0"
+    }
+}

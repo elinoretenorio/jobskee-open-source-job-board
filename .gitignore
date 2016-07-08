@@ -2,3 +2,6 @@
 /assets/images/*
 /assets/attachments/*
 *.patch
+
+vendor
+composer.lock

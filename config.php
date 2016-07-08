@@ -25,7 +25,7 @@ include 'models/class.phpmailer.php';
 include 'models/class.smtp.php';
 include 'models/rb.php';
 spl_autoload_register(function ($class) {
-	if (file_exists("models/{$class}.php")) { include "models/{$class}.php"; }	
+	if (file_exists("models/{$class}.php")) { include "models/{$class}.php"; }
 });
 
 // LOAD TRANSLATION
@@ -123,12 +123,7 @@ if (APP_MODE == 'production') {
 	$debug = true;
 }
 
-// SLIM MICROFRAMEWORK
-require 'Slim/Slim.php';
 \Slim\Slim::registerAutoloader();
-
-// SLIM CSRF GUARD
-require 'Slim/Extras/Middleware/CsrfGuard.php';
 
 $app = new \Slim\Slim(array('mode'=>APP_MODE, 'templates.path'=>VIEWS_PATH, 'debug'=>$debug));
 $app->add(new \Slim\Extras\Middleware\CsrfGuard());
