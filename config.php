@@ -7,6 +7,9 @@
  * @url         http://www.jobskee.com
  */
 
+ $dotenv = new Dotenv\Dotenv(__DIR__);
+ $dotenv->load();
+
 // INITIATE SESSION
 session_start();
 ini_set('default_charset', 'utf-8');
@@ -50,25 +53,26 @@ date_default_timezone_set($lang->t('app|timezone'));
  */
 
 // SMTP SETTINGS
-define('SMTP_ENABLED', true);
-define('SMTP_AUTH', true);
-define('SMTP_URL', 'smtp.gmail.com');
-define('SMTP_USER', 'username@gmail.com');
-define('SMTP_PASS', 'password');
-define('SMTP_PORT', 465);
-define('SMTP_SECURE', 'ssl');
+define('SMTP_ENABLED', getenv('SMTP_ENABLED'));
+define('SMTP_AUTH', getenv('SMTP_AUTH'));
+define('SMTP_URL', getenv('SMTP_URL'));
+define('SMTP_USER', getenv('SMTP_USER'));
+define('SMTP_PASS', getenv('SMTP_PASS'));
+define('SMTP_PORT', getenv('SMTP_PORT'));
+define('SMTP_SECURE', getenv('SMTP_SECURE'));
+define('ADMIN_EMAIL', getenv('ADMIN_EMAIL'));
 
 // APPLICATION URL PATHS
-define('BASE_URL','http://jobskee.local:10088/'); // always include the trailing slash at the end
+define('BASE_URL', getenv('BASE_URL')); // always include the trailing slash at the end
 
 // DATABASE SETTINGS
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'jobskee');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_HOST', getenv('DB_HOST'));
+define('DB_NAME', getenv('DB_NAME'));
+define('DB_USER', getenv('DB_USER'));
+define('DB_PASS', getenv('DB_PASS'));
 
 // GOOGLE ANALYTICS TRACKING
-define('GA_TRACKING', '');
+define('GA_TRACKING', getenv('GA_TRACKING'));
 
 // APP SETTINGS CONSTANTS
 define('LOGO_H', 200); // logo height
