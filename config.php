@@ -7,8 +7,10 @@
  * @url         http://www.jobskee.com
  */
 
- $dotenv = new Dotenv\Dotenv(__DIR__);
- $dotenv->load();
+if (getenv('APP_MODE') != 'production') {
+  $dotenv = new Dotenv\Dotenv(__DIR__);
+  $dotenv->load();
+}
 
 // INITIATE SESSION
 session_start();
