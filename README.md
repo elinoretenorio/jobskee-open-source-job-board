@@ -25,14 +25,14 @@ Requirements
 
 Installation
 ------------
-1. Export sql file
+1. Open sql file
 2. Update admin table with your desired username and password (sha1)
-3. Upload the files
-4. Update config.php with your settings
+3. Import the file into SQL database
+4. Copy `.env.example` to `.env` and fill out variables
 5. Change file permission of /assets/images and /assets/attachments to 777
 6. Check that all .htaccess files were uploaded
 
-Default admin login info: 
+Default admin login info:
 Email: admin@example.com
 Password: admin
 
@@ -69,13 +69,13 @@ You can also customize the default values for Categories and Cities with the val
 
 ### Setting up your Jobskee job board
 
-After downloading Jobskee﻿ and have setup your database and correct folder permission on `assets/attachments` and `assets/images`, you can now setup your job board by opening the `config.php` file found in the root folder.
+After downloading Jobskee﻿ and have setup your database and correct folder permission on `assets/attachments` and `assets/images`, you can now setup your job board by opening your `.env` (duplicated from `.env.example`) file found in the root folder.
 
-I'd like to mention some important values in the `config.php` that you need to set in order to successfully run your job board:
+I'd like to mention some important values in the `.env` that you need to set in order to successfully run your job board:
 
-APP_MODE - currently defaulted to 'development'. You need to set this to 'production' when your site is in production mode as it affects several other configuration (i.e. database, debug, etc.)
+`APP_MODE` - currently defaulted to 'development'. You need to set this to 'production' when your site is in production mode as it affects several other configuration (i.e. database, debug, etc.)
 
-APP_THEME - currently set to 'default'. This is the default theme used by Jobskee. If you would like to customize this theme, it is recommended that you copy `/views/default` to your new theme (i.e. `/views/my_theme`) and set APP_THEME to 'my_theme'. This will ensure that you can go back to the default theme, should your theme customization produce error that you cannot recover.
+`APP_THEME` - set to 'default'. This is the default theme used by Jobskee. If you would like to customize this theme, it is recommended that you copy `/views/default` to your new theme (i.e. `/views/my_theme`) and set `APP_THEME` to 'my_theme'. This will ensure that you can go back to the default theme, should your theme customization produce error that you cannot recover.
 
 SMTP SETTINGS - the default SMTP settings is Gmail friendly and should work right away when you provide your correct Gmail information. For other settings, like using your own hosting's default mail host, you must configure it correctly in order for email notifications to work.
 
@@ -83,33 +83,35 @@ These are the recommended settings:
 
 Using "localhost"
 
-﻿// SMTP SETTINGS  
-define('SMTP_ENABLED', true);  
-define('SMTP_AUTH', false);  
-define('SMTP_URL', 'localhost');  
-define('SMTP_USER', 'email@example.com');  
-define('SMTP_PASS', '');  
-define('SMTP_PORT', 25);  
-define('SMTP_SECURE', '');  
-
+```bash
+﻿# SMTP SETTINGS  
+SMTP_ENABLED=True
+SMTP_AUTH=False
+SMTP_URL='localhost'
+SMTP_USER='email@example.com'
+SMTP_PASS=''
+SMTP_PORT=25
+SMTP_SECURE=''
+ADMIN_EMAIL='email@example.com'
+```
 and using Gmail
+```bash
+# SMTP SETTINGS  
+SMTP_ENABLED=True
+SMTP_AUTH=True
+SMTP_URL='smtp.gmail.com'
+SMTP_USER='email@example.com'
+SMTP_PASS='gmail password'
+SMTP_PORT=465
+SMTP_SECURE='ssl'
+ADMIN_EMAIL='email@example.com'
+```
 
-// SMTP SETTINGS  
-define('SMTP_ENABLED', true);  
-define('SMTP_AUTH', true);  
-define('SMTP_URL', 'smtp.gmail.com');  
-define('SMTP_USER', 'email@gmail.com');  
-define('SMTP_PASS', 'gmail password);  
-define('SMTP_PORT', 465);  
-define('SMTP_SECURE', 'ssl');  
+`BASE_URL` - as commented in the file, you need to provide your full URL including the trailing slashes.
 
-APPLICATION URL PATHS - as commented in the file, you need to provide your full URL including the trailing slashes.
+`CRON_TOKEN` - this is used for running cron job to expire jobs. Provide a unique token that you can use in order to expire jobs using the path: `/cron/jobs/expire/:cron_token`
 
-SHARETHIS_PUBID - in order to enable the social media sharing for the jobs, you need to register a Publication ID at www.sharethis.com
-
-CRON_TOKEN - this is used for running cron job to expire jobs. Provide a unique token that you can use in order to expire jobs using the path: `/cron/jobs/expire/:cron_token`
-
-GA_TRACKING - get insights to your job board by adding a Google Analytics tracking ID here.
+`GA_TRACKING` - get insights to your job board by adding a Google Analytics tracking ID here.
 
 ### Switch Language
 

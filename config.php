@@ -38,8 +38,8 @@ $lang = new Translate();
 define('APP_NAME', $lang->t('app|name'));
 define('APP_DESC', $lang->t('app|desc'));
 define('APP_AUTHOR', 'Elinore Tenorio (elinore.tenorio@gmail.com)');
-define('APP_MODE', 'development'); // set to 'production' if site is live, affects RedBean not being frozen if not in correct mode
-define('APP_THEME', 'default'); // set to the theme folder name you are using, found in /views directory
+define('APP_MODE', getenv('APP_MODE')); // set to 'production' if site is live, affects RedBean not being frozen if not in correct mode
+define('APP_THEME', getenv('APP_THEME')); // set to the theme folder name you are using, found in /views directory
 
 // TIMEZONE
 date_default_timezone_set($lang->t('app|timezone'));
@@ -80,7 +80,7 @@ define('LOGO_W', 200); // logo width
 define('LIMIT', 20); // number of jobs to display per page
 define('HOME_LIMIT', 5); // number of jobs to display per category on the homepage
 define('EXPIRE_JOBS', 30); // days to expire jobs
-define('CRON_TOKEN', 'ioYgaCEfCEXQtzP2'); // token to verify cron job execution
+define('CRON_TOKEN', getenv('CRON_TOKEN')); // token to verify cron job execution
 define('ALLOW_JOB_POST', 1); // set (1) to allow job posting and (0) to turn off
 
 /*
