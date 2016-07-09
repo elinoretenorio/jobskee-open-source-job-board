@@ -4,5 +4,4 @@
 *.patch
 
 vendor
-composer.lock
 .env
