@@ -32,6 +32,7 @@ Installation
 5. Change file permission of /assets/images and /assets/attachments to 777
 6. Check that all .htaccess files were uploaded
 7. Install dependencies with [Composer](https://getcomposer.org/) `composer update`
+8. Run `php -S localhost:8080`
 
 Default admin login info:
 Email: admin@example.com
