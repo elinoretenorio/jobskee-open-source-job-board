@@ -31,6 +31,7 @@ Installation
 4. Copy `.env.example` to `.env` and fill out variables
 5. Change file permission of /assets/images and /assets/attachments to 777
 6. Check that all .htaccess files were uploaded
+7. Install dependencies with [Composer](https://getcomposer.org/) `composer update`
 
 Default admin login info:
 Email: admin@example.com
