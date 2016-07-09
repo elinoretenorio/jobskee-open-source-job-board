@@ -1,20 +1,20 @@
 <?php
 /**
- * Jobskee - open source job board 
+ * Jobskee - open source job board
  *
  * @author      Elinore Tenorio <elinore.tenorio@gmail.com>
  * @license     MIT
  * @url         http://www.jobskee.com
- * 
+ *
  * Notifications class handles all outgoing notifications from Jobskee
  */
 
 class Notifications {
-    
+
     protected $app_name;
     protected $email_footer;
 
-    public function __construct() 
+    public function __construct()
     {
         $this->app_name = APP_NAME;
         $base_url = BASE_URL;
@@ -24,7 +24,7 @@ class Notifications {
             Thank you for using <a href="{$base_url}">{$this->app_name}</a>
 FOOTER;
     }
-    
+
     /*
      * New Job Notification
      * Send email to activate and manage job
@@ -32,7 +32,7 @@ FOOTER;
     public function jobCreateUpdateMail($data)
     {
         $message = '';
-        
+
         $jobs_url = BASE_URL . "jobs/";
         $subject  = "Activate your job post on {$this->app_name}";
         $message .= "<p>Welcome to {$this->app_name}!</p>";
@@ -66,7 +66,7 @@ FOOTER;
     public function applyForJobMail($data)
     {
         $message = '';
-        
+
         $cover_letter = nl2br($data['cover_letter']);
         $subject  = "Job application for {$data['title']} posted at {$this->app_name}";
         $message .= "<p>An application was sent to a job you posted.</p>";
@@ -88,9 +88,9 @@ FOOTER;
     public function createSubscriptionMail($id, $token, $recipient, $subscription_for)
     {
         $message = '';
-        
+
         $link = BASE_URL . "subscribe/{$id}/confirm/{$token}";
-        
+
         $subject = "Please confirm your subscription at {$this->app_name}";
         $message .= "<p>You subcribed to receive {$subscription_for} jobs on {$this->app_name}.</p>";
         $message .= "<p>To activate your subscription, click this link to start receiving alerts.</p>";
@@ -100,13 +100,13 @@ FOOTER;
         }
         return false;
     }
-    
+
     public function updateSubscriptionMail($recipient, $id, $token, $subscription_for)
     {
         $message = '';
-        
+
         $link = BASE_URL . "subscribe/{$id}/delete/{$token}";
-        
+
         $subject  = "Thank you for confirming your subscription at {$this->app_name}";
         $message .= "<p>You subcribed to receive {$subscription_for} jobs on {$this->app_name}.</p>";
         $message .= "<p>To unsubscribe, click this link to stop receiving alerts.</p>";
@@ -116,23 +116,23 @@ FOOTER;
         }
         return false;
     }
-    
+
     public function sendEmailsToSubscribersMail($job_id)
     {
         global $categories, $cities;
         $message = '';
         $content = '';
-        
+
         // get job information
         $j = new Jobs($job_id);
         $job = $j->showJobDetails();
         $title = $j->getSlugTitle();
-        
+
         $category_name = $categories[$job->category]['name'];
         $city_name = $cities[$job->city]['name'];
         $job_link = BASE_URL . "jobs/{$job->id}/{$title}";
         $description = Parsedown::instance()->parse($job->description);
-        
+
         $content .= "<p>Job Details</p>";
         $content .= "<p>-----------</p>";
         $content .= "<p><a href={$job_link}>{$job_link}</a></p>";
@@ -143,17 +143,17 @@ FOOTER;
         }
         $content .= "<p>How to apply: {$job->how_to_apply}</p>";
         $content .= "<p>-----------</p>";
-        
+
         // get all users subscribed to the job
-        $users = R::findAll('subscriptions', " is_confirmed=1 AND (category_id=:category_id OR city_id=:city_id) ", 
+        $users = R::findAll('subscriptions', " is_confirmed=1 AND (category_id=:category_id OR city_id=:city_id) ",
                     array(':category_id'=>$job->category, ':city_id'=>$job->city));
-        
+
         foreach ($users as $user) {
-            
+
             $link = BASE_URL . "subscribe/{$user->id}/delete/{$user->token}";
-            
+
             $name = ($user->category_id > 0) ? $category_name : $city_name;
-            
+
             $subject = "A new {$name} job was posted at {$this->app_name}";
 
             $message = '';
@@ -161,7 +161,7 @@ FOOTER;
             $message .= $content;
             $message .= "<p>To unsubscribe, click this link to stop receiving alerts.</p>";
             $message .= "<p><a href={$link}>{$link}</a></p>";
-                       
+
             if ($this->sendNotification($subject, $message, $user->email)) {
                 $update = R::load('subscriptions', $user->id);
                 $update->last_sent = R::isoDateTime();
@@ -169,7 +169,7 @@ FOOTER;
             }
         }
     }
-    
+
     /*
      * General email notification sender
      */
@@ -192,16 +192,16 @@ FOOTER;
         $mail->Port = SMTP_PORT;
         $mail->Username = SMTP_USER;
         $mail->Password = SMTP_PASS;
-        $mail->setFrom(SMTP_USER, APP_NAME . ' Admin');
+        $mail->setFrom(ADMIN_EMAIL, APP_NAME . ' Admin');
         $mail->Subject = $subject;
         $mail->Body = $message . $this->email_footer;
         $mail->AddAddress($recipient);
-        
+
         $file = ATTACHMENT_PATH . $attachment;
         if ($attachment != '' && file_exists($file)) {
             $mail->addAttachment($file);
         }
-        
+
         try {
             if ($mail->Send()) {
                 return true;
@@ -211,4 +211,3 @@ FOOTER;
         }
     }
 }
-

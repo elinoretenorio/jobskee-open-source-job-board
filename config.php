@@ -7,6 +7,9 @@
  * @url         http://www.jobskee.com
  */
 
+ $dotenv = new Dotenv\Dotenv(__DIR__);
+ $dotenv->load();
+
 // INITIATE SESSION
 session_start();
 ini_set('default_charset', 'utf-8');
@@ -25,7 +28,7 @@ include 'models/class.phpmailer.php';
 include 'models/class.smtp.php';
 include 'models/rb.php';
 spl_autoload_register(function ($class) {
-	if (file_exists("models/{$class}.php")) { include "models/{$class}.php"; }	
+	if (file_exists("models/{$class}.php")) { include "models/{$class}.php"; }
 });
 
 // LOAD TRANSLATION
@@ -35,8 +38,8 @@ $lang = new Translate();
 define('APP_NAME', $lang->t('app|name'));
 define('APP_DESC', $lang->t('app|desc'));
 define('APP_AUTHOR', 'Elinore Tenorio (elinore.tenorio@gmail.com)');
-define('APP_MODE', 'development'); // set to 'production' if site is live, affects RedBean not being frozen if not in correct mode
-define('APP_THEME', 'default'); // set to the theme folder name you are using, found in /views directory
+define('APP_MODE', getenv('APP_MODE')); // set to 'production' if site is live, affects RedBean not being frozen if not in correct mode
+define('APP_THEME', getenv('APP_THEME')); // set to the theme folder name you are using, found in /views directory
 
 // TIMEZONE
 date_default_timezone_set($lang->t('app|timezone'));
@@ -50,25 +53,26 @@ date_default_timezone_set($lang->t('app|timezone'));
  */
 
 // SMTP SETTINGS
-define('SMTP_ENABLED', true);
-define('SMTP_AUTH', true);
-define('SMTP_URL', 'smtp.gmail.com');
-define('SMTP_USER', 'username@gmail.com');
-define('SMTP_PASS', 'password');
-define('SMTP_PORT', 465);
-define('SMTP_SECURE', 'ssl');
+define('SMTP_ENABLED', getenv('SMTP_ENABLED'));
+define('SMTP_AUTH', getenv('SMTP_AUTH'));
+define('SMTP_URL', getenv('SMTP_URL'));
+define('SMTP_USER', getenv('SMTP_USER'));
+define('SMTP_PASS', getenv('SMTP_PASS'));
+define('SMTP_PORT', getenv('SMTP_PORT'));
+define('SMTP_SECURE', getenv('SMTP_SECURE'));
+define('ADMIN_EMAIL', getenv('ADMIN_EMAIL'));
 
 // APPLICATION URL PATHS
-define('BASE_URL','http://jobskee.local:10088/'); // always include the trailing slash at the end
+define('BASE_URL', getenv('BASE_URL')); // always include the trailing slash at the end
 
 // DATABASE SETTINGS
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'jobskee');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_HOST', getenv('DB_HOST'));
+define('DB_NAME', getenv('DB_NAME'));
+define('DB_USER', getenv('DB_USER'));
+define('DB_PASS', getenv('DB_PASS'));
 
 // GOOGLE ANALYTICS TRACKING
-define('GA_TRACKING', '');
+define('GA_TRACKING', getenv('GA_TRACKING'));
 
 // APP SETTINGS CONSTANTS
 define('LOGO_H', 200); // logo height
@@ -76,7 +80,7 @@ define('LOGO_W', 200); // logo width
 define('LIMIT', 20); // number of jobs to display per page
 define('HOME_LIMIT', 5); // number of jobs to display per category on the homepage
 define('EXPIRE_JOBS', 30); // days to expire jobs
-define('CRON_TOKEN', 'ioYgaCEfCEXQtzP2'); // token to verify cron job execution
+define('CRON_TOKEN', getenv('CRON_TOKEN')); // token to verify cron job execution
 define('ALLOW_JOB_POST', 1); // set (1) to allow job posting and (0) to turn off
 
 /*
@@ -123,12 +127,7 @@ if (APP_MODE == 'production') {
 	$debug = true;
 }
 
-// SLIM MICROFRAMEWORK
-require 'Slim/Slim.php';
 \Slim\Slim::registerAutoloader();
-
-// SLIM CSRF GUARD
-require 'Slim/Extras/Middleware/CsrfGuard.php';
 
 $app = new \Slim\Slim(array('mode'=>APP_MODE, 'templates.path'=>VIEWS_PATH, 'debug'=>$debug));
 $app->add(new \Slim\Extras\Middleware\CsrfGuard());

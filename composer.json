@@ -1,0 +1,16 @@
+{
+    "name": "elinoretenorio/jobskee-open-source-job-board",
+    "description": "A simple open source job board for everyone.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Elinore Tenorio",
+            "email": "elinore.tenorio@gmail.com"
+        }
+    ],
+    "require": {
+        "slim/slim": "2.*",
+        "slim/extras": "^2.0",
+        "vlucas/phpdotenv": "^2.3"
+    }
+}
