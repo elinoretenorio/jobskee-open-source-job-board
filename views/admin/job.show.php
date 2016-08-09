@@ -38,7 +38,7 @@
         </div>
         <div class="col-md-3">
             <?php if ($job->logo != ''): ?>
-            <img src="<?php echo ASSET_URL ."images/thumb_{$job->logo}"; ?>" alt="" class="img-thumbnail">
+            <img src="<?php echo BUCKET_URL ."{$job->logo}"; ?>" alt="" class="img-thumbnail">
             <?php endif; ?>
         </div>
     </div>
