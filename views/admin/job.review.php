@@ -88,7 +88,7 @@
         <div class="form-group">
         <label for="company_name" class="col-sm-3 control-label input-lg"><?php echo $lang->t('jobs|logo'); ?></label>
             <div class="col-sm-8">
-              <img src="<?php echo ASSET_URL ."images/thumb_{$job->logo}"; ?>" alt="" class="img-thumbnail">
+              <img src="<?php echo BUCKET_URL ."{$job->logo}"; ?>" alt="" class="img-thumbnail">
             </div>
         </div>
         <?php endif; ?>

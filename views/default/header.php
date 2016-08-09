@@ -19,7 +19,7 @@
     <meta property="og:title" content="<?php _e($seo_title); ?>" />
     <meta property="og:url" content="<?php _e($seo_url); ?>" />
     <?php if (isset($job) && $job->logo != ''): ?>
-    <meta property="og:image" content="<?php _e(ASSET_URL . "images/thumb_{$job->logo}"); ?>" />
+    <meta property="og:image" content="<?php _e(BUCKET_URL . "{$job->logo}"); ?>" />
     <?php endif; ?>
     <meta property="og:description" content="<?php _e($seo_desc); ?>" />
     <meta property="og:site_name" content="<?php _e($seo_title); ?>" />
@@ -58,7 +58,7 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $lang->t('link|cities'); ?> <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <?php foreach($cities as $cit): ?>  
+                <?php foreach($cities as $cit): ?>
                 <li><a href="<?php _e(BASE_URL . "cities/{$cit->id}/{$cit->url}"); ?>"><?php _e($cit->name); ?></a></li>
                 <?php endforeach; ?>
               </ul>
@@ -76,4 +76,3 @@
     </div>
 
     <div class="container theme-showcase">
-     

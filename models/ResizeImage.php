@@ -6,9 +6,11 @@
  * Max width size while keep aspect ratio
  * Max height size while keep aspect ratio
  * Automatic while keep aspect ratio
- * 
+ *
  * @web http://php.dzone.com/articles/resize-image-class-php
  */
+use Aws\S3\S3Client;
+
 class ResizeImage
 {
     private $ext;
@@ -109,6 +111,16 @@ class ResizeImage
                 break;
         }
 
+        $client = S3Client::factory(array(
+            'region' => S3_REGION,
+            'version' => '2006-03-01'
+        ));
+        $result = $client->putObject(array(
+            'Bucket'     => S3_BUCKET_NAME,
+            'Key'        => $savePath,
+            'SourceFile' => $savePath
+        ));
+
         if($download)
         {
             header('Content-Description: File Transfer');
@@ -166,7 +178,7 @@ class ResizeImage
         }
 
         $this->newImage = imagecreatetruecolor($this->resizeWidth, $this->resizeHeight);
-        
+
         switch($this->ext)
         {
             case 'image/png':
@@ -176,7 +188,7 @@ class ResizeImage
                 imagesavealpha($this->newImage, true);
             break;
         }
-        
+
         imagecopyresampled($this->newImage, $this->image, 0, 0, 0, 0, $this->resizeWidth, $this->resizeHeight, $this->origWidth, $this->origHeight);
     }
 

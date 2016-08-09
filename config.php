@@ -17,7 +17,7 @@ session_start();
 ini_set('default_charset', 'utf-8');
 
 // ENGLISH TRANSLATION
-define('APP_LANG', 'en');
+define('APP_LANG', 'aca');
 setlocale(LC_ALL, 'en_EN');
 
 // FRENCH TRANSLATION
@@ -103,8 +103,11 @@ define('CSV_FIELDS', 10);
 
 // CORE APPLICATION URLS
 define('ASSET_URL', BASE_URL . 'assets/');
-define('ATTACHMENT_PATH', 'assets/attachments/');
-define('IMAGE_PATH', 'assets/images/');
+define('ATTACHMENT_PATH', '');
+define('IMAGE_PATH', '');
+define('BUCKET_URL', getenv('BUCKET_URL'));
+define('S3_BUCKET_NAME', getenv('S3_BUCKET_NAME'));
+define('S3_REGION', getenv('S3_REGION'));
 define('LOGIN_URL', ADMIN_URL . 'login');
 
 // MVC PATHS

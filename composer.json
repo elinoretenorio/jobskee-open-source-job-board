@@ -12,6 +12,7 @@
         "slim/slim": "2.*",
         "slim/extras": "^2.0",
         "vlucas/phpdotenv": "^2.3",
-        "ext-gd": "*"
+        "ext-gd": "*",
+        "aws/aws-sdk-php": "^3.18"
     }
 }
