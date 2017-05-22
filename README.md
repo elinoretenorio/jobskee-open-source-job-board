@@ -7,6 +7,12 @@ Author
 Elinore Tenorio (elinore.tenorio@gmail.com)  
 Manila, Philippines
 
+Spanish Translation
+-------------------
+Jesús Enrique Rojas Niño (sael.udistrital@gmail.com)
+UOC 
+Bogotá Colombia
+
 Stacks used
 -----------
 
