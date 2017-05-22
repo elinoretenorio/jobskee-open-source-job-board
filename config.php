@@ -5,19 +5,24 @@
  * @author      Elinore Tenorio <elinore.tenorio@gmail.com>
  * @license     MIT
  * @url         http://www.jobskee.com
- */
+ * Spanish translation ; Jesús Enrique Rojas Niño - UOC  <sael.udistrital@gmail.com>
+ */  
 
 // INITIATE SESSION
 session_start();
 ini_set('default_charset', 'utf-8');
 
 // ENGLISH TRANSLATION
-define('APP_LANG', 'en');
-setlocale(LC_ALL, 'en_EN');
+//define('APP_LANG', 'en');
+//setlocale(LC_ALL, 'en_EN');
 
 // FRENCH TRANSLATION
 // define('APP_LANG', 'fr');
 // setlocale(LC_ALL, 'fr_FR');
+
+//SPANISH TRANSLATION
+define('APP_LANG', 'es');
+setlocale(LC_ALL, 'es_ES');
 
 // AUTO LOAD MODELS
 include 'models/helpers.php';
