@@ -19,6 +19,10 @@ setlocale(LC_ALL, 'en_EN');
 // define('APP_LANG', 'fr');
 // setlocale(LC_ALL, 'fr_FR');
 
+//SPANISH TRANSLATION
+//define('APP_LANG', 'es');
+//setlocale(LC_ALL, 'es_ES');
+
 // AUTO LOAD MODELS
 include 'models/helpers.php';
 include 'models/class.phpmailer.php';
