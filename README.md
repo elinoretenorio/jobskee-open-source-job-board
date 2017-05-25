@@ -1,19 +1,19 @@
 About
 -----
-Jobskee is an open source job board with minimal configuration and relatively small footprint.
+Jobskee Spanish es un Job Board Open Source Traducido al español de configuración mínima y de tamaño relativamente pequeño
 
 Author
 ------
 Elinore Tenorio (elinore.tenorio@gmail.com)  
 Manila, Philippines
 
-Spanish Translation
--------------------
+Traducción al español
+---------------------
 Jesús Enrique Rojas Niño (sael.udistrital@gmail.com)
-UOC 
-Bogotá Colombia
+UOC
+Bogotá, Colombia
 
-Stacks used
+Pilas utilizadas
 -----------
 
 * Slim Microframework
@@ -23,71 +23,72 @@ Stacks used
 * Markdown
 * etc.
 
-Requirements
+Requisitos
 ------------
-* PHP 5.3 and above
+* PHP 5.3 y superior
 * MySQL
-* mod_rewrite enabled
+* mod_rewrite habilitado
 
-Installation
+Instalación
 ------------
-1. Export sql file
-2. Update admin table with your desired username and password (sha1)
-3. Upload the files
-4. Update config.php with your settings
-5. Change file permission of /assets/images and /assets/attachments to 777
-6. Check that all .htaccess files were uploaded
+1. Exportar el fichero sql
+2. Actualizar la tabla admin con el nombre de usuario y la contraseña deseados (sha1)
+3. Cargar los archivos
+4. Actualizar el fichero config.php con la configuración deseada
+5. Cambiar los permisos de los archivos /assets/images y /assets/attachments a 777
+6. Compruebe que todos los archivos .htaccess se hayan cargado
 
-Default admin login info: 
-Email: admin@example.com
-Password: admin
+Información de inicio de sesión de administrador predeterminada:
+Correo electrónico: admin@example.com
+Contraseña: admin
 
-Installation Notes
+Notas de Instalación
 ------------------
 
-### Enable PHP5.3+ using .htaccess
+### Habilite PHP5.3+ usando .htaccess
 
-Some old hosting providers still use PHP5.2 version, note that Jobskee will not run on this old version.
+Algunos antiguos proveedores de alojamiento aún utilizan la versión PHP5.2, tenga en cuenta que Jobskee no se ejecutará en esta versión antigua.
 
-In order to use PHP5.3+, you can edit .htaccess file in the root folder and uncomment (remove the pound sign at the beginning of) this line:
+Para usar PHP5.3 +, puede editar el archivo .htaccess en la carpeta raíz y descomentar (quitar el signo de numeral (#) al inicio) esta línea:
 
 ﻿`AddType application/x-httpd-php53 .php`
 
-### Importing jobskee.sql
 
-When you download Jobskee, you will find a database file included that you need to import to a MySQL database.
+### Importando jobskee.sql
 
-Before importing however, you can edit the file to update several things:
+Cuando descargue Jobskee, encontrará un archivo de base de datos incluido que necesita importar a una base de datos MySQL.
 
-ADMIN ACCOUNT
+Sin embargo, antes de importar, puede editar el archivo para actualizar varias cosas:
 
-You can look for this line in the .sql file
+CUENTA ADMIN
+
+Puede buscar esta línea en el archivo .sql
 
 ﻿`INSERT INTO admin (id, email, password) VALUES
 (1, 'admin@example.com', 'd033e22ae348aeb5660fc2140aec35850c4da997')`;
 
-﻿and change it with the values you want:
+Y cámbielo con los valores que desea:
 
 ﻿`INSERT INTO admin (id, email, password) VALUES
 (1, 'your desired admin email address', sha1('your desired admin password'))`;
 
-You can also customize the default values for Categories and Cities with the values you want before importing jobskee.sql to your own database.
+También puede personalizar los valores predeterminados para Categorías y ciudades con los valores que desea antes de importar jobskee.sql a su propia base de datos.
 
-### Setting up your Jobskee job board
+### Configuración de su Job Board Jobskee
 
-After downloading Jobskee﻿ and have setup your database and correct folder permission on `assets/attachments` and `assets/images`, you can now setup your job board by opening the `config.php` file found in the root folder.
+Después de descargar Jobskee y configurar su base de datos y corregir el permiso de carpeta en `assets/attachments` y`assets/images`, ahora puede configurar su Job Board abriendo el archivo `config.php` que se encuentra en la carpeta raíz.
 
-I'd like to mention some important values in the `config.php` that you need to set in order to successfully run your job board:
+Me gustaría mencionar algunos valores importantes en el `config.php` que debe configurar para poder ejecutar correctamente su Job Board:
 
-APP_MODE - currently defaulted to 'development'. You need to set this to 'production' when your site is in production mode as it affects several other configuration (i.e. database, debug, etc.)
+APP_MODE - actualmente predeterminado como 'development'. Debe configurar esto como "production" cuando su sitio está en modo de producción, ya que afecta a varias otras configuraciones (por ejemplo, base de datos, depuración, etc.)
 
-APP_THEME - currently set to 'default'. This is the default theme used by Jobskee. If you would like to customize this theme, it is recommended that you copy `/views/default` to your new theme (i.e. `/views/my_theme`) and set APP_THEME to 'my_theme'. This will ensure that you can go back to the default theme, should your theme customization produce error that you cannot recover.
+APP_THEME - actualmente establecido en 'default'. Este es el tema por defecto utilizado por Jobskee. Si desea personalizar este tema, se recomienda que copie `/views/default` en su nuevo tema (es decir,`/views/my_theme`) y configure APP_THEME en 'my_theme'. Esto garantizará que pueda volver al tema predeterminado, si la personalización del tema produce un error que no puede recuperarse.
 
-SMTP SETTINGS - the default SMTP settings is Gmail friendly and should work right away when you provide your correct Gmail information. For other settings, like using your own hosting's default mail host, you must configure it correctly in order for email notifications to work.
+AJUSTES SMTP: la configuración predeterminada de SMTP es compatible con Gmail y debería funcionar de inmediato cuando proporcione la información correcta de Gmail. Para otras configuraciones, como utilizar el host de correo predeterminado de su propio alojamiento, debe configurarlo correctamente para que las notificaciones por correo electrónico funcionen.
 
-These are the recommended settings:
+Estos son los ajustes recomendados:
 
-Using "localhost"
+Usando "localhost"
 
 ﻿// SMTP SETTINGS  
 define('SMTP_ENABLED', true);  
@@ -98,7 +99,7 @@ define('SMTP_PASS', '');
 define('SMTP_PORT', 25);  
 define('SMTP_SECURE', '');  
 
-and using Gmail
+y usando Gmail
 
 // SMTP SETTINGS  
 define('SMTP_ENABLED', true);  
@@ -109,14 +110,14 @@ define('SMTP_PASS', 'gmail password);
 define('SMTP_PORT', 465);  
 define('SMTP_SECURE', 'ssl');  
 
-APPLICATION URL PATHS - as commented in the file, you need to provide your full URL including the trailing slashes.
+APPLICATION URL PATHS - como se ha comentado en el archivo, debe proporcionar su URL completa incluyendo las barras inclinadas finales.
 
-SHARETHIS_PUBID - in order to enable the social media sharing for the jobs, you need to register a Publication ID at www.sharethis.com
+SHARETHIS_PUBID - para habilitar el uso compartido de medios sociales para los trabajos, debe registrar una ID de publicación en www.sharethis.com
 
-CRON_TOKEN - this is used for running cron job to expire jobs. Provide a unique token that you can use in order to expire jobs using the path: `/cron/jobs/expire/:cron_token`
+CRON_TOKEN: se utiliza para ejecutar cron job para expirar empleos. Proporciona un token único que puede utilizar para expirar empleos utilizando la ruta: `/cron/jobs/expire/:cron_token`
 
-GA_TRACKING - get insights to your job board by adding a Google Analytics tracking ID here.
+GA_TRACKING: obtenga información sobre su Job Board agregando aquí un ID de seguimiento de Google Analytics.
 
-### Switch Language
+### Cambiar idioma
 
-Comment out Lines 15 and 16 and uncomment Lines 19 and 20 to switch from English to French translation
+Comentar las líneas del idioma activo y descomentar las líneas para cambiar la traducción al idioma deseado
