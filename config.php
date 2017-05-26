@@ -6,7 +6,7 @@
  * @license     MIT
  * @url         http://www.jobskee.com
  * Spanish translation ; Jesús Enrique Rojas Niño - UOC  <sael.udistrital@gmail.com>
- */  
+ */
 
 // INITIATE SESSION
 session_start();
@@ -30,7 +30,7 @@ include 'models/class.phpmailer.php';
 include 'models/class.smtp.php';
 include 'models/rb.php';
 spl_autoload_register(function ($class) {
-	if (file_exists("models/{$class}.php")) { include "models/{$class}.php"; }	
+	if (file_exists("models/{$class}.php")) { include "models/{$class}.php"; }
 });
 
 // LOAD TRANSLATION
@@ -64,7 +64,12 @@ define('SMTP_PORT', 465);
 define('SMTP_SECURE', 'ssl');
 
 // APPLICATION URL PATHS
-define('BASE_URL','http://jobskee.local:10088/'); // always include the trailing slash at the end
+//define('BASE_URL','http://jobskee.local:10088/'); // always include the trailing slash at the end
+define('BASE_URL','http://localhost/jobskee/');
+
+//CAPTCHA SECURE IMAGE DIRECTORY, used in jobs.php
+//define document root directory . /jobskee_directory, change the jobskee name by the name of your jobskee directory
+define ('BASE_SECUREIMAGE',$_SERVER['DOCUMENT_ROOT'] . '/jobskee/');
 
 // DATABASE SETTINGS
 define('DB_HOST', 'localhost');
