@@ -1,7 +1,7 @@
 <?php include 'header.php'; ?>
 
 <div class="row">
-  
+
   <div class="col-md-12">
       <?php include 'flash.php'; ?>
       <form class="form-horizontal" role="form" action="<?php _e(BASE_URL); ?>jobs/review" method="post" enctype="multipart/form-data">
@@ -20,7 +20,7 @@
               <p class="lead"><?php echo $lang->t('jobs|describe_position'); ?></p>
             </div>
         </div>
-       
+
         <div class="form-group">
             <label for="title" class="col-sm-3 control-label input-lg"><?php echo $lang->t('jobs|title'); ?></label>
             <div class="col-sm-8">
@@ -38,7 +38,7 @@
                 </select>
             </div>
         </div>
-          
+
         <div class="form-group">
             <label for="city" class="col-sm-3 control-label input-lg"><?php echo $lang->t('jobs|city'); ?></label>
             <div class="col-sm-6">
@@ -49,7 +49,7 @@
                 </select>
             </div>
         </div>
-          
+
         <div class="form-group">
             <label for="description" class="col-sm-3 control-label input-lg"><?php echo $lang->t('jobs|description'); ?></label>
             <div class="col-sm-8">
@@ -57,7 +57,7 @@
               <p class="help-block"><?php echo $lang->t('jobs|accepts'); ?> <a href="http://daringfireball.net/projects/markdown/syntax" target="_blank">MarkDown</a></p>
             </div>
         </div>
-          
+
         <div class="form-group">
         <label for="perks" class="col-sm-3 control-label input-lg"><?php echo $lang->t('jobs|perks'); ?></label>
             <div class="col-sm-8">
@@ -71,7 +71,7 @@
             </div>
         </div>
 
-        
+
         <div class="form-group">
             <div class="col-sm-3"></div>
             <div class="col-sm-8">
@@ -106,19 +106,22 @@
               <input type="email" class="form-control input-lg" id="email" name="email" required />
             </div>
         </div>
-        
+
         <div class="form-group">
             <div class="text-center">
               <input type="hidden" id="token" name="token" value="<?php _e($token); ?>" />
               <input type="hidden" id="trap" name="trap" value="" />
               <input type="hidden" name="<?php _e($csrf_key); ?>" value="<?php _e($csrf_token); ?>">
+              <img id="captcha" src="<?php _e(BASE_URL); ?>securimage/securimage_show.php" alt="CAPTCHA Image" />
+              <input type="text" name="captcha_code" size="10" maxlength="6" />
+              <a href="#" onclick="document.getElementById('captcha').src = '<?php _e(BASE_URL); ?>securimage/securimage_show.php?' + Math.random(); return false">[ Refrescar Imágen ]</a>
               <input type="submit" class="btn btn-success btn-lg" value="<?php echo $lang->t('jobs|btn_review'); ?>" />
             </div>
         </div>
     </form>
-      
+
   </div>
- 
+
 </div>
 
 <?php include 'footer.php'; ?>
