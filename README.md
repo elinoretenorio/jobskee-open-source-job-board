@@ -1,9 +1,12 @@
-About
------
+Esta es una traducción al español del fichero original que puede encontrar como README_eng.md
+Traducción: Jesús Enrique Rojas Niño,  sael.udistrital@gmail.com,  UOC
+
+Acerca de
+---------
 Jobskee Spanish es un Job Board Open Source Traducido al español de configuración mínima y de tamaño relativamente pequeño
 
-Author
-------
+Autor
+-----
 Elinore Tenorio (elinore.tenorio@gmail.com)  
 Manila, Philippines
 
@@ -121,3 +124,12 @@ GA_TRACKING: obtenga información sobre su Job Board agregando aquí un ID de se
 ### Cambiar idioma
 
 Comentar las líneas del idioma activo y descomentar las líneas para cambiar la traducción al idioma deseado
+
+PHP CAPTCHA Script
+------------------
+Nombre : Securimage V.3.6.4
+Author Drew Phillips drew@drew-phillips.com
+Licencia: BSD
+Descarga: phpcaptcha.org
+Código fuente: https://github.com/dapphp/securimage
+Documentación en Securimage/README.md y en https://www.phpcaptcha.org/documentation/
