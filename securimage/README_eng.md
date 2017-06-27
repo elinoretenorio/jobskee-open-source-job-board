@@ -1,45 +1,38 @@
-Esta es una traducción al español del fichero original que puede encontrar como
-README_eng.md.
-Se dejan las notas de Copyright en el idioma original.
-Traducción: Jesús Enrique Rojas Niño,  sael.udistrital@gmail.com,  UOC
+## Name:
 
-## Nombre:
+**Securimage** - A PHP class for creating captcha images and audio with many options.
 
-**Securimage** - Una clase de PHP para crear imágenes y audio captcha  con
-muchas opciones.
-
-## Versión:
+## Version:
 
 **3.6.4**
 
-## Autor:
+## Author:
 
 Drew Phillips <drew@drew-phillips.com>
 
-## Descarga:
+## Download:
 
-La última versión siempre se puede encontrar en
-[phpcaptcha.org](https://www.phpcaptcha.org)
+The latest version can always be found at [phpcaptcha.org](https://www.phpcaptcha.org)
 
 ## Documentation:
 
-Se puede encontrar documentación en línea de la clase, métodos y variables
-en http://www.phpcaptcha.org/Securimage_Docs/
+Online documentation of the class, methods, and variables can be found 
+at http://www.phpcaptcha.org/Securimage_Docs/
 
-## Requiremientos:
+## Requirements:
 
-* PHP 5.2 o superior
+* PHP 5.2 or greater
 * GD  2.0
-* FreeType (Requerido, para fuentes TTF)
-* PDO (si usa Sqlite, MySQL, o PostgreSQL)
+* FreeType (Required, for TTF fonts)
+* PDO (if using Sqlite, MySQL, or PostgreSQL)
 
 ## Synopsis:
-
-**Dentro de su formulario HTML**
-
+    
+**Within your HTML form**
+    
     <form method="post" action="">
     .. form elements
-
+    
     <div>
         <?php
             require_once 'securimage.php';
@@ -47,9 +40,9 @@ en http://www.phpcaptcha.org/Securimage_Docs/
         ?>
     </div>
     </form>
-
-
-**Dentro de su procesador de formularios PHP**
+   
+    
+**Within your PHP form processor**
 
     require_once 'securimage.php';
 
@@ -62,43 +55,41 @@ en http://www.phpcaptcha.org/Securimage_Docs/
       echo "Sorry, wrong code.";
     }
 
-## Descripción:
+## Description:
 
-¿Qué es ** Securimage **?
+What is **Securimage**?
 
-Securimage es una clase PHP que se utiliza para generar y validar imágenes
-CAPTCHA.
+Securimage is a PHP class that is used to generate and validate CAPTCHA images.
+    
+The classes uses an existing PHP session or creates its own if none is found to
+store the CAPTCHA code.  In addition, a database can be used instead of 
+session storage.
+    
+Variables within the class are used to control the style and display of the
+image.  The class uses TTF fonts and effects for strengthening the security of
+the image.
+    
+It also creates audible codes which are played for visually impared users.
 
-Las clases usan una sesión existente de PHP o crean las propias si no se
-encuentra ninguna para almacenar el código CAPTCHA. Además, se puede utilizar
-una base de datos en lugar del almacenamiento de sesiones.
+## UPGRADE NOTICE:
 
-Las variables dentro de la clase se utilizan para controlar el estilo y la
-visualización de la imagen. La clase utiliza fuentes TTF y efectos para reforzar
-la seguridad de la imagen.
+**3.6.3 and below:**
+Securimage 3.6.4 fixed a XSS vulnerability in example_form.ajax.php.  It is
+recommended to upgrade to the latest version or delete example_form.ajax.php
+from the securimage directory on your website.
 
-También crea códigos audibles que se usan para usuarios visualmente impedidos.
+**3.6.2 and above:**
 
-## NOTAS DE ACTUALIZACIÓN:
+If you are upgrading to 3.6.2 or greater *AND* are using database storage,
+the table structure has changed in 3.6.2 adding an audio_data column for
+storing audio files in the database in order to support HTTP range
+requests.  Delete your tables and have Securimage recreate them or see
+the function createDatabaseTables() in securimage.php for the new structure
+depending on which database backend you are using and alter the tables as
+needed.  If using SQLite, just overwrite your existing securimage.sq3 file
+with the one from this release.
 
-** 3.6.3 y siguientes: **
-Securimage 3.6.4 corrigió una vulnerabilidad XSS en example_form.ajax.php.
-Se recomienda actualizar a la última versión o eliminar example_form.ajax.php
-desde el directorio securimage de su sitio web.
-
-** 3.6.2 y superiores: **
-
-Si está actualizando a 3.6.2 o superior * AND * está utilizando el
-almacenamiento de la base de datos, la estructura de la tabla ha cambiado en
-3.6.2 agregando una columna de audio_data para almacenar archivos de audio en la
-base de datos con el fin de soportar peticiones de rango HTTP. Elimine las
-tablas y haga que Securimage las vuelva a crear o vea la función
-createDatabaseTables () en securimage.php para la nueva estructura, dependiendo
-del backend de la base de datos que esté utilizando y cambie las tablas según
-sea necesario. Si utiliza SQLite, simplemente sobrescriba su archivo
-securimage.sq3 existente con el de esta versión.
-
-* Si no está utilizando tablas de base de datos para el almacenamiento, ignore este aviso. *
+*If you are not using database tables for storage, ignore this notice.*
 
 ## Copyright:
 Script
@@ -126,7 +117,7 @@ Script
     ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
 
-## Licencias:
+## Licenses:
 
 **WavFile.php**
 
@@ -137,42 +128,42 @@ Script
 Script
 ---------------------------------------------------------------------------
 
-**Código Flash para Securimage**
+**Flash code for Securimage**
 
-Código Flash creado por Age Bosma & Mario Romero (animario@hotmail.com)
-Muchas gracias por lanzar esto al proyecto!
+Flash code created by Age Bosma & Mario Romero (animario@hotmail.com)
+Many thanks for releasing this to the project!
 
 ---------------------------------------------------------------------------
 
 **HKCaptcha**
 
-Porciones de Securimage contienen código de Han-Kwang Nienhuys 'PHP captcha
-
+Portions of Securimage contain code from Han-Kwang Nienhuys' PHP captcha
+        
     Han-Kwang Nienhuys' PHP captcha
     Copyright June 2007
-
+    
     This copyright message and attribution must be preserved upon
     modification. Redistribution under other licenses is expressly allowed.
     Other licenses include GPL 2 or higher, BSD, and non-free licenses.
     The original, unrestricted version can be obtained from
     http://www.lagom.nl/linux/hkcaptcha/
-
+    
 ---------------------------------------------------------------------------
 
 **AHGBold.ttf**
 
-    AHGBold.ttf (AlteHaasGroteskBold.ttf) fuente fue creada por Yann Le Coroller
-    y se distribuye como freeware.
-
-    Alte Haas Grotesk Es una tipografía que parece una helvética impresa en un
-    viejo libro Muller-Brockmann.
-
-    Estas fuentes son freeware y se pueden distribuir siempre y cuando estén
-    junto con este archivo de texto.
-
-    Apreciaría mucho ver lo que usted ha hecho con él de todos modos.
-
-    yann le coroller
+    AHGBold.ttf (AlteHaasGroteskBold.ttf) font was created by Yann Le Coroller
+    and is distributed as freeware.
+    
+    Alte Haas Grotesk is a typeface that look like an helvetica printed in an
+    old Muller-Brockmann Book.
+    
+    These fonts are freeware and can be distributed as long as they are
+    together with this text file. 
+    
+    I would appreciate very much to see what you have done with it anyway.
+    
+    yann le coroller 
     www.yannlecoroller.com
     yann@lecoroller.com
 
@@ -180,8 +171,7 @@ Porciones de Securimage contienen código de Han-Kwang Nienhuys 'PHP captcha
 
 **PopForge Flash Library**
 
-orciones de securimage_play.swf utilizan la biblioteca flash PopForge para
-reproducir audio
+Portions of securimage_play.swf use the PopForge flash library for playing audio
 
     /**
      * Copyright(C) 2007 Andre Michelle and Joa Ebert
@@ -203,12 +193,12 @@ reproducir audio
      * You should have received a copy of the GNU General Public License
      * along with this program. If not, see <http://www.gnu.org/licenses/>
      */
-
+     
 --------------------------------------------------------------------------
 
-**Gráficos**
+**Graphics**
 
-Algunos gráficos usados ​​son del Humility Icon Pack de WorLord
+Some graphics used are from the Humility Icon Pack by WorLord
 
      License: GNU/GPL (http://findicons.com/pack/1723/humility)
      http://findicons.com/icon/192558/gnome_volume_control
@@ -217,10 +207,10 @@ Algunos gráficos usados ​​son del Humility Icon Pack de WorLord
 --------------------------------------------------------------------------
 
 
-**Los archivos de sonido de ruido de fondo son de SoundJay.com**
+**Background noise sound files are from SoundJay.com**
 
 http://www.soundjay.com/tos.html
-
+     
      All sound effects on this website are created by us and protected under
      the copyright laws, international treaty provisions and other applicable
      laws. By downloading sounds, music or any material from this site implies
@@ -231,7 +221,7 @@ http://www.soundjay.com/tos.html
      projects (such as films, videos, games, presentations, animations, stage
      plays, radio plays, audio books, apps) be it for commercial or
      non-commercial purposes.
-
+    
      But you are NOT allowed to
      - post the sounds (as sound effects or ringtones) on any website for
        others to download, copy or use
@@ -248,6 +238,7 @@ http://www.soundjay.com/tos.html
        sound resource library for other people's use (such as animation
        creator, digital book creator, song maker software, etc.). If you are
        developing such computer programs, contact us for licensing options.
-
+    
      If you use the sound effects, please consider giving us a credit and
      linking back to us but it's not required.
+     
